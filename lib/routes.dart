@@ -9,7 +9,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => mainpage());
+        return MaterialPageRoute(builder: (_) => const mainpage());
       default:
         return _errorRoute();
     }
@@ -18,8 +18,8 @@ class RouteGenerator {
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
-        appBar: AppBar(title: Text("Error")),
-        body: Center(child: Text('Error page')),
+        appBar: AppBar(title: const Text("Error")),
+        body: const Center(child: Text('Error page')),
       );
     });
   }

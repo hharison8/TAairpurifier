@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class mainpage extends StatelessWidget {
+  const mainpage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,10 +60,10 @@ class mainpage extends StatelessWidget {
               width: 400,
               height: 100,
               margin: const EdgeInsets.only(top:16, bottom: 16),
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(160, 199, 235, 1),
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(160, 199, 235, 1),
                 boxShadow: [
-                  const BoxShadow(
+                  BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.4),
                     blurRadius: 2.0,
                     offset: Offset(0.0, 1.5)
@@ -69,12 +71,12 @@ class mainpage extends StatelessWidget {
                 ],
               ),
               child:Container(
-                padding: EdgeInsets.only(top:8),
+                padding: const EdgeInsets.only(top:8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children:  [
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         text: '21°C\n',
                         style: TextStyle(color:Colors.white,
                         fontSize: 32,
@@ -88,7 +90,7 @@ class mainpage extends StatelessWidget {
                       ) 
                     ),
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         text: '43\n',
                         style: TextStyle(color:Colors.white,
                         fontSize: 32,
@@ -102,7 +104,7 @@ class mainpage extends StatelessWidget {
                       ) 
                     ),
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         text: '15%\n',
                         style: TextStyle(color:Colors.white,
                         fontSize: 32,
@@ -120,7 +122,7 @@ class mainpage extends StatelessWidget {
                 ),
               )
             ),
-            Container(
+            SizedBox(
               width: 400,
               height: 156,
               child: Row(
@@ -181,7 +183,7 @@ class mainpage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
+            const SizedBox(
               width: 400,
               height: 60,
               child: Column(
@@ -189,33 +191,31 @@ class mainpage extends StatelessWidget {
                 children: [SliderWidget()],
               ),
             ),
-            Container(
+            SizedBox(
               width: 400,
               height: 80,
-              child:Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children:  [
-                    Container(
-                      width: 120,
-                      height: 60,
-                      color: Colors.white,
-                      child: Image.asset(
-                        'assets/Stat.png'
-                      ),
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children:  [
+                  Container(
+                    width: 120,
+                    height: 60,
+                    color: Colors.white,
+                    child: Image.asset(
+                      'assets/Stat.png'
                     ),
-                    Container(
-                      width: 120,
-                      height: 60,
-                      color: Colors.white,
-                      child: Image.asset(
-                        'assets/Fan.png'
-                      ),
-                      
+                  ),
+                  Container(
+                    width: 120,
+                    height: 60,
+                    color: Colors.white,
+                    child: Image.asset(
+                      'assets/Fan.png'
                     ),
                     
-                  ],
-                ),
+                  ),
+                  
+                ],
               )
             ),
           ]
@@ -226,6 +226,8 @@ class mainpage extends StatelessWidget {
 }  
 
 class SliderWidget extends StatefulWidget {
+  const SliderWidget({super.key});
+
   @override
   _SliderWidgetState createState() => _SliderWidgetState();
 }
