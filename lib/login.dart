@@ -80,23 +80,35 @@ class _LoginState extends State<Login>{
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 5,
                   ),
-                  TextButton(onPressed: () {},
-                      child: Text('Forgot Password?', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 18,
-                        color: Color(0xff4c505b)
-                      ),),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end, // Mengatur teks ke kanan
+                    children: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            fontFamily: "Railway",
+                            decoration: TextDecoration.underline,
+                            fontSize: 15,
+                            color: Color(0xff4c505b)
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   const SizedBox(
                     height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Sign In',
                         style: TextStyle(
+                          fontFamily: "Railway",
                           color: Color(0xff4c505b),
                           fontSize: 27, 
                           fontWeight: FontWeight.w700
@@ -104,11 +116,13 @@ class _LoginState extends State<Login>{
                       ),
                       CircleAvatar(
                         radius: 30,
-                        backgroundColor: Color(0xff4c505b),
+                        backgroundColor: const Color(0xff4c505b),
                         child: IconButton(
                           color: Colors.white,
-                          onPressed: () {},
-                          icon: Icon(Icons.arrow_forward),
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'mainpage');
+                          },
+                          icon: const Icon(Icons.arrow_forward),
                         ),
                       ),
                     ]
@@ -117,16 +131,22 @@ class _LoginState extends State<Login>{
                     height: 40,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(onPressed: () {},
-                      child: Text('Dont have account yet?', style: TextStyle(
-                        fontSize: 18,
+                      const Text('Dont have an account yet?', 
+                      style: TextStyle(
+                        fontFamily: "Railway",
+                        fontSize: 15,
                         color: Colors.black
-                      ),),),
-                      TextButton(onPressed: () {},
-                      child: Text('Sign Up', style: TextStyle(
+                      ),),
+                      TextButton(onPressed: () {
+                        Navigator.pushNamed(context, 'register');
+                      },
+                      child: const Text('Sign Up', 
+                      style: TextStyle(
+                        fontFamily: "Railway",
                         decoration: TextDecoration.underline,
-                        fontSize: 18,
+                        fontSize: 15,
                         color: Color(0xff4c505b)
                       ),),)
                     ]

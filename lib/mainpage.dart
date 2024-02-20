@@ -99,37 +99,6 @@ class mainpage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: 0,
-                        top: 400,
-                        right: 270,
-                        bottom: 300,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color.fromRGBO(160, 199, 235, 1),
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(100),
-                              bottomRight: Radius.circular(100),
-                            ),
-                          ),
-                          child: const Column(
-                            children: [
-                              Text(
-                                '21°C',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 4),
-                              Text('Suhu',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12))
-                            ],
-                          ),
-                        ),
-                      ),
                       RichText(
                           text: const TextSpan(
                               text: '15%\n',
