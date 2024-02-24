@@ -11,9 +11,9 @@ Future main() async {
     debugShowCheckedModeBanner: false,
     initialRoute: 'login',
     routes: {
-      'login': (context) => Login(),
-      'register': (context) => Register(),
-      'mainpage': (context) => mainpage(),
+      'login': (context) => const Login(),
+      'register': (context) => const Register(),
+      'mainpage': (context) => const mainpage(),
     },
     onGenerateRoute: RouteGenerator.generateRoute,
   ));

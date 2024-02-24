@@ -19,38 +19,41 @@ class _RegisterState extends State<Register> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Stack(children: [
-          Container(
-            alignment: const Alignment(-0.7, -0.2),
-            child: const Text(
-              'Create\n Account',
-              style: TextStyle(
-                fontFamily: "Railway",
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 33,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            alignment: const Alignment(-0.6, -0.1),
-            child: const Text(
-              "Please Sign In to Continue",
-              style: TextStyle(
+        body: Stack(
+          children: [
+            Container(
+              alignment: const Alignment(-0.7, -0.4),
+              child: const Text(
+                'Create\nAccount',
+                style: TextStyle(
                   fontFamily: "Railway",
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: 15),
+                  fontSize: 33,
+                ),
+              ),
             ),
-          ),
-          SingleChildScrollView(
+            SingleChildScrollView(
               child: Container(
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.5,
-                      right: 35,
-                      left: 35),
-                  child: Column(children: [
+                alignment: Alignment(0.0, -0.2),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.5,
+                    right: 35,
+                    left: 35),
+                child: Column(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                        fillColor: const Color.fromRGBO(160, 199, 235, 1),
+                        filled: true,
+                        hintText: 'Username',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     TextField(
                       decoration: InputDecoration(
                         fillColor: const Color.fromRGBO(160, 199, 235, 1),
@@ -123,31 +126,36 @@ class _RegisterState extends State<Register> {
                       height: 40,
                     ),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Already have account?',
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Already have account?',
+                          style: TextStyle(
+                              fontFamily: "Railway",
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'login');
+                          },
+                          child: const Text(
+                            'Sign In',
                             style: TextStyle(
                                 fontFamily: "Railway",
+                                decoration: TextDecoration.underline,
                                 fontSize: 15,
-                                color: Colors.black),
+                                color: Color(0xff4c505b)),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, 'login');
-                            },
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                  fontFamily: "Railway",
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 15,
-                                  color: Color(0xff4c505b)),
-                            ),
-                          )
-                        ])
-                  ])))
-        ]),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -34,89 +34,86 @@ class mainpage extends StatelessWidget {
                 ],
               ),
               child: Container(
-                  padding: const EdgeInsets.only(top: 64),
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Column(
-                    children: [
-                      Text(
-                        '50',
-                        style: TextStyle(
-                            color: Color.fromRGBO(160, 199, 235, 1),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 100,
-                            height: 0.95),
-                      ),
-                      Text(
-                        'PM2.5',
-                        style: TextStyle(
-                            color: Color.fromRGBO(160, 199, 235, 1),
-                            fontSize: 24),
-                      )
-                    ],
-                  )),
-            ),
-            Container(
-                width: 400,
-                height: 100,
-                margin: const EdgeInsets.only(top: 16, bottom: 16),
+                padding: const EdgeInsets.only(top: 64),
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(160, 199, 235, 1),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.4),
-                        blurRadius: 2.0,
-                        offset: Offset(0.0, 1.5)),
+                  color: Color.fromRGBO(255, 255, 255, 1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Column(
+                  children: [
+                    Text(
+                      '50',
+                      style: TextStyle(
+                          color: Color.fromRGBO(160, 199, 235, 1),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 100,
+                          height: 0.95),
+                    ),
+                    Text(
+                      'PM2.5',
+                      style: TextStyle(
+                          color: Color.fromRGBO(160, 199, 235, 1),
+                          fontSize: 24),
+                    )
                   ],
                 ),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Positioned.fill(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 400, bottom: 300),
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                              color: Color.fromRGBO(178, 209, 238, 1),
-                              shape: BoxShape.rectangle),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '43',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 4),
-                              Text('CO')
-                            ],
-                          ),
+              ),
+            ),
+            Container(
+              width: 400,
+              height: 100,
+              margin: const EdgeInsets.only(top: 16, bottom: 16),
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(160, 199, 235, 1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.4),
+                    blurRadius: 2.0,
+                    offset: Offset(0.0, 1.5),
+                  ),
+                ],
+              ),
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 3),
+                      child: Text(
+                        '43',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 2,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
                         ),
                       ),
-                      RichText(
-                          text: const TextSpan(
-                              text: '15%\n',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold),
-                              children: [
-                            TextSpan(
-                                text: 'Kelembaban',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ))
-                          ])),
-                    ],
-                  ),
-                )),
+                    ),
+                    Text(
+                      'CO',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            blurRadius: 2,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(),
             SizedBox(
               width: 400,
               height: 156,
