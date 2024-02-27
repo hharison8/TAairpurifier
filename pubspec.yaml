@@ -70,6 +70,8 @@ flutter:
   - assets/Power.png
   - assets/Stat.png
   - assets/Logo.png
+  - assets/(bg)Login.png
+  - assets/(bg)Register.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

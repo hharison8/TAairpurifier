@@ -13,9 +13,7 @@ class _RegisterState extends State<Register> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          alignment: Alignment(0.0, -1.3),
-          image: AssetImage('assets/logo.png'),
-        ),
+            image: AssetImage('assets/(bg)Register.png'), fit: BoxFit.cover),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -35,7 +33,6 @@ class _RegisterState extends State<Register> {
             ),
             SingleChildScrollView(
               child: Container(
-                alignment: Alignment(0.0, -0.2),
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.5,
                     right: 35,
@@ -44,7 +41,7 @@ class _RegisterState extends State<Register> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(160, 199, 235, 1),
+                        fillColor: const Color.fromRGBO(255, 255, 255, 1),
                         filled: true,
                         hintText: 'Username',
                         border: OutlineInputBorder(
@@ -56,7 +53,7 @@ class _RegisterState extends State<Register> {
                     ),
                     TextField(
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(160, 199, 235, 1),
+                        fillColor: const Color.fromRGBO(255, 255, 255, 1),
                         filled: true,
                         hintText: 'Email',
                         border: OutlineInputBorder(
@@ -69,7 +66,7 @@ class _RegisterState extends State<Register> {
                     TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(160, 199, 235, 1),
+                        fillColor: const Color.fromRGBO(255, 255, 255, 1),
                         filled: true,
                         hintText: 'Password',
                         border: OutlineInputBorder(

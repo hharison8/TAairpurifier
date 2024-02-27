@@ -7,7 +7,6 @@ class Login extends StatefulWidget{
   _LoginState createState() => _LoginState();
 }
 
-
 class _LoginState extends State<Login>{
 
   @override
@@ -15,8 +14,7 @@ class _LoginState extends State<Login>{
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          alignment: Alignment(0.0, -1.3),
-          image: AssetImage('assets/logo.png'),
+          image: AssetImage('assets/(bg)Login.png'), fit: BoxFit.cover
         ),
       ),
       child: Scaffold(
@@ -24,7 +22,7 @@ class _LoginState extends State<Login>{
         body: Stack(
           children: [
             Container(
-              alignment: const Alignment(-0.7, -0.2),
+              alignment: const Alignment(-0.7, -0.4),
               child: const Text('Welcome!', 
               style: TextStyle(
                 fontFamily: "Railway", 
@@ -59,7 +57,7 @@ class _LoginState extends State<Login>{
                     decoration: InputDecoration(
                       fillColor: const Color.fromRGBO(160, 199, 235, 1),
                       filled: true,
-                      hintText: 'Email',
+                      label: const Text("Email"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)
                       ),
@@ -73,7 +71,7 @@ class _LoginState extends State<Login>{
                     decoration: InputDecoration(
                       fillColor: const Color.fromRGBO(160, 199, 235, 1),
                       filled: true,
-                      hintText: 'Password',
+                      label: const Text("Password"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)
                       ),

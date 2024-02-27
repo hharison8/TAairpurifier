@@ -47,7 +47,14 @@ class mainpage extends StatelessWidget {
                           color: Color.fromRGBO(160, 199, 235, 1),
                           fontWeight: FontWeight.bold,
                           fontSize: 100,
-                          height: 0.95),
+                          height: 0.95,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black12,
+                              offset: Offset(-2, -2),
+                              blurRadius: 5,
+                            )
+                          ]),
                     ),
                     Text(
                       'PM2.5',
@@ -113,7 +120,6 @@ class mainpage extends StatelessWidget {
                 ),
               ),
             ),
-            Container(),
             SizedBox(
               width: 400,
               height: 156,
