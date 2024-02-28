@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "245560806155",
+    "firebase_url": "https://ta-air-purifier-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ta-air-purifier",
+    "storage_bucket": "ta-air-purifier.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245560806155:android:47831159404017c50a300e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrLk-NMRaQgGH1GlYl0yxI5u4G-_NEjgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

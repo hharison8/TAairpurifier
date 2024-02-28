@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/mainpage.dart';
@@ -7,6 +10,19 @@ import 'package:flutter_application_1/routes.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  if(Platform.isAndroid){
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSy",
+        appId: "asdasd",
+        messagingSenderId: "123123",
+        projectId: "qasdasd",
+        storageBucket: "fir"));
+  } else {
+    await Firebase.initializeApp();
+  }
+
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: 'login',
