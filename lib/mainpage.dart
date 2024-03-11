@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class mainpage extends StatelessWidget {
+class mainpage extends StatefulWidget {
   const mainpage({super.key});
+
+  @override
+  _MainpageState createState() => _MainpageState();
+}
+
+class _MainpageState extends State<mainpage> {
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,27 +90,58 @@ class mainpage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Center(
+              child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 3),
-                      child: Text(
-                        '43',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 40,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 2,
-                              offset: Offset(0, 2),
+                    StreamBuilder<DocumentSnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('EspData')
+                          .doc('DHT11')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return CircularProgressIndicator();
+                        }
+
+                        // Check if the document exists
+                        if (snapshot.hasData && snapshot.data!.exists) {
+                           // Access the data from the document
+                           Map<String, dynamic>? data =
+                             snapshot.data!.data() as Map<String, dynamic>?;
+
+                        // Check if data is not null
+                         if (data != null) {
+                          // Access the specific fields
+                          String coValue = data['CO'] ?? '0.0';
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 3),
+                          child: Text(
+                            coValue,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                        } else {
+                          // Handle the case when data is null
+                          return Text('Data is null');
+                        }
+                        } else {
+                          // Handle the case when the document doesn't exist
+                          return Text('Document does not exist');
+                        }
+                      },
                     ),
                     Text(
                       'CO',

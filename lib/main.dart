@@ -13,11 +13,11 @@ Future main() async {
   if(Platform.isAndroid){
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: "AIzaSy",
-        appId: "asdasd",
-        messagingSenderId: "123123",
-        projectId: "qasdasd",
-        storageBucket: "fir"));
+        apiKey: "AIzaSyCrLk-NMRaQgGH1GlYl0yxI5u4G-_NEjgY",
+        appId: "1:245560806155:android:47831159404017c50a300e",
+        messagingSenderId: "245560806155",
+        projectId: "ta-air-purifier",
+        storageBucket: "ta-air-purifier.appspot.com"));
   } else {
     await Firebase.initializeApp();
   }
