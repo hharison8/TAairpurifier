@@ -15,7 +15,7 @@ class RouteGenerator {
       case '/register':
         return MaterialPageRoute(builder: (_) => const Register());
       case '/mainpage':
-        return MaterialPageRoute(builder: (_) => const Mainpage());
+        return MaterialPageRoute(builder: (_) => const mainpage());
       case '/statistic':
         return MaterialPageRoute(builder: (_) => const Statistic());
       default:
