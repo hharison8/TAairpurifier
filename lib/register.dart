@@ -113,7 +113,7 @@ class _RegisterState extends State<Register> {
                             child: IconButton(
                               color: Colors.white,
                               onPressed: () {
-                                Navigator.pushNamed(context, 'mainpage');
+                                Navigator.pushNamed(context, '/mainpage');
                               },
                               icon: const Icon(Icons.arrow_forward),
                             ),
@@ -134,7 +134,7 @@ class _RegisterState extends State<Register> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, 'login');
+                            Navigator.pushNamed(context, '/');
                           },
                           child: const Text(
                             'Sign In',

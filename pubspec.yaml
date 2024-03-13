@@ -39,9 +39,9 @@ dependencies:
   firebase_core: ^2.25.4
   cloud_firestore: ^4.15.8
 
-#flutter_native_splash:
-#color: "#FFFFFF"
-#image: "\assets\logo.png"
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: 'assets\(bg)SplashScreen.png'
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +74,7 @@ flutter:
   - assets/Logo.png
   - assets/(bg)Login.png
   - assets/(bg)Register.png
+  - assets/(bg)SplashScreen.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
