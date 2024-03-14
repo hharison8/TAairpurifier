@@ -9,10 +9,6 @@ class mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<mainpage> {
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +77,7 @@ class _MainpageState extends State<mainpage> {
               height: 100,
               margin: const EdgeInsets.only(top: 16, bottom: 16),
               decoration: const BoxDecoration(
-                color: Color.fromRGBO(160, 199, 235, 1),
+                color: Color.fromRGBO(178, 209, 238, 1),
                 boxShadow: [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.4),
@@ -90,75 +86,141 @@ class _MainpageState extends State<mainpage> {
                   ),
                 ],
               ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    StreamBuilder<DocumentSnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('EspData')
-                          .doc('DHT11')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return CircularProgressIndicator();
-                        }
-
-                        // Check if the document exists
-                        if (snapshot.hasData && snapshot.data!.exists) {
-                           // Access the data from the document
-                           Map<String, dynamic>? data =
-                             snapshot.data!.data() as Map<String, dynamic>?;
-
-                        // Check if data is not null
-                         if (data != null) {
-                          // Access the specific fields
-                          String coValue = data['CO'] ?? '0.0';
-
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 3),
-                          child: Text(
-                            coValue,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 40,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black,
-                                  blurRadius: 2,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
-                            ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 120,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(160, 190, 235, 1),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(50),
+                            bottomRight: Radius.circular(50))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '12°C',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black12,
+                                  offset: Offset(-2, -2),
+                                  blurRadius: 5),
+                            ],
                           ),
-                        );
-                        } else {
-                          // Handle the case when data is null
-                          return Text('Data is null');
-                        }
-                        } else {
-                          // Handle the case when the document doesn't exist
-                          return Text('Document does not exist');
-                        }
-                      },
+                        ),
+                        Text(
+                          'Suhu',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'CO',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black,
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('EspData')
+                              .doc('DHT11')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
+                            }
+                            if (snapshot.hasData && snapshot.data!.exists) {
+                              // Access the data from the document
+                              Map<String, dynamic>? data = snapshot.data!.data()
+                                  as Map<String, dynamic>?;
+
+                              if (data != null) {
+                                // Access the specific fields
+                                String coValue = data['CO'] ?? '0.0';
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 3),
+                                  child: Text(
+                                    coValue,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 40,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black,
+                                          blurRadius: 2,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                // Handle the case when data is null
+                                return Text('Data is null');
+                              }
+                            } else {
+                              // Handle the case when the document doesn't exist
+                              return Text('Document does not exist');
+                            }
+                          },
+                        ),
+                        Text(
+                          'CO',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black,
+                                blurRadius: 2,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    width: 120,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(160, 199, 235, 1),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            bottomLeft: Radius.circular(50))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '29%',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black12,
+                                  offset: Offset(-2, -2),
+                                  blurRadius: 5),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          'Lembab',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
             SizedBox(
@@ -236,17 +298,27 @@ class _MainpageState extends State<mainpage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    width: 120,
-                    height: 60,
-                    color: Colors.white,
-                    child: Image.asset('assets/Stat.png'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    child: Container(
+                      width: 120,
+                      height: 60,
+                      color: Colors.white,
+                      child: Image.asset('assets/Stat.png'),
+                    ),
                   ),
-                  Container(
-                    width: 120,
-                    height: 60,
-                    color: Colors.white,
-                    child: Image.asset('assets/Fan.png'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '');
+                    },
+                    child: Container(
+                      width: 120,
+                      height: 60,
+                      color: Colors.white,
+                      child: Image.asset('assets/Fan.png'),
+                    ),
                   ),
                 ],
               ),
