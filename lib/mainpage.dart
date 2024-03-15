@@ -9,6 +9,7 @@ class mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<mainpage> {
+  bool _showSlider = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -280,18 +281,26 @@ class _MainpageState extends State<mainpage> {
                             offset: Offset(0.0, 1.5)),
                       ],
                     ),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _showSlider = !_showSlider;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              width: 400,
-              height: 60,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [SliderWidget()],
+            if (_showSlider)
+              const SizedBox(
+                width: 400,
+                height: 80,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [SliderWidget()],
+                ),
               ),
-            ),
             SizedBox(
               width: 400,
               height: 80,
@@ -300,23 +309,39 @@ class _MainpageState extends State<mainpage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamed(context, '/');
                     },
                     child: Container(
-                      width: 120,
+                      width: 150,
                       height: 60,
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.4),
+                              blurRadius: 2.0,
+                              offset: Offset(0.0, 1.5)),
+                        ],
+                      ),
                       child: Image.asset('assets/Stat.png'),
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '');
-                    },
+                    onTap: () {},
                     child: Container(
-                      width: 120,
+                      width: 150,
                       height: 60,
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.4),
+                              blurRadius: 2.0,
+                              offset: Offset(0.0, 1.5)),
+                        ],
+                      ),
                       child: Image.asset('assets/Fan.png'),
                     ),
                   ),
