@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class mainpage extends StatefulWidget {
-  const mainpage({super.key});
+  const mainpage({Key? key}) : super(key: key);
 
   @override
-  _MainpageState createState() => _MainpageState();
+  _mainpageState createState() => _mainpageState();
 }
 
-class _MainpageState extends State<mainpage> {
+class _mainpageState extends State<mainpage> {
   bool _showSlider = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +20,8 @@ class _MainpageState extends State<mainpage> {
         backgroundColor: const Color.fromRGBO(255, 255, 255, 255),
         centerTitle: true,
         title: const Text(
-          "Home", style: TextStyle(fontFamily: "Raleway"), //ganti logo
+          "Home",
+          style: TextStyle(fontFamily: "Raleway"),
         ),
       ),
       body: Center(
@@ -35,9 +37,10 @@ class _MainpageState extends State<mainpage> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.4),
-                      blurRadius: 2.0,
-                      offset: Offset(0.0, 1.5)),
+                    color: Color.fromRGBO(0, 0, 0, 0.4),
+                    blurRadius: 2.0,
+                    offset: Offset(0.0, 1.5),
+                  ),
                 ],
               ),
               child: Container(
@@ -51,23 +54,25 @@ class _MainpageState extends State<mainpage> {
                     Text(
                       '50',
                       style: TextStyle(
-                          color: Color.fromRGBO(160, 199, 235, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 100,
-                          height: 0.95,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black12,
-                              offset: Offset(-2, -2),
-                              blurRadius: 5,
-                            )
-                          ]),
+                        color: Color.fromRGBO(160, 199, 235, 1),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 100,
+                        height: 0.95,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black12,
+                            offset: Offset(-2, -2),
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
                     ),
                     Text(
                       'PM2.5',
                       style: TextStyle(
-                          color: Color.fromRGBO(160, 199, 235, 1),
-                          fontSize: 24),
+                        color: Color.fromRGBO(160, 199, 235, 1),
+                        fontSize: 24,
+                      ),
                     )
                   ],
                 ),
@@ -94,26 +99,63 @@ class _MainpageState extends State<mainpage> {
                     width: 120,
                     height: 100,
                     decoration: BoxDecoration(
-                        color: Color.fromRGBO(160, 190, 235, 1),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(50),
-                            bottomRight: Radius.circular(50))),
+                      color: Color.fromRGBO(160, 190, 235, 1),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(50),
+                        bottomRight: Radius.circular(50),
+                      ),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '12°C',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40,
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black12,
-                                  offset: Offset(-2, -2),
-                                  blurRadius: 5),
-                            ],
-                          ),
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('EspData')
+                              .doc('DHT11')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
+                            }
+                            if (snapshot.hasData && snapshot.data!.exists) {
+                              // Access the data from the document
+                              Map<String, dynamic>? data =
+                                  snapshot.data!.data() as Map<String, dynamic>?;
+
+                              if (data != null) {
+                                // Access the specific fields
+                                String tempValue = data['Temperature'] ?? '0.0';
+                                double temperature = double.tryParse(tempValue) ?? 0;
+
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${temperature.toInt()}°C',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 40,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black12,
+                                            offset: Offset(-2, -2),
+                                            blurRadius: 5,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                // Handle the case when data is null
+                                return Text('Data is null');
+                              }
+                            } else {
+                              // Handle the case when the document doesn't exist
+                              return Text('Document does not exist');
+                            }
+                          },
                         ),
                         Text(
                           'Suhu',
@@ -137,17 +179,18 @@ class _MainpageState extends State<mainpage> {
                             }
                             if (snapshot.hasData && snapshot.data!.exists) {
                               // Access the data from the document
-                              Map<String, dynamic>? data = snapshot.data!.data()
-                                  as Map<String, dynamic>?;
+                              Map<String, dynamic>? data =
+                                  snapshot.data!.data() as Map<String, dynamic>?;
 
                               if (data != null) {
                                 // Access the specific fields
                                 String coValue = data['CO'] ?? '0.0';
+                                double CO = double.tryParse(coValue) ?? 0;
 
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   child: Text(
-                                    coValue,
+                                    '${CO.toInt()}',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -193,34 +236,70 @@ class _MainpageState extends State<mainpage> {
                     width: 120,
                     height: 100,
                     decoration: BoxDecoration(
-                        color: Color.fromRGBO(160, 199, 235, 1),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(50),
-                            bottomLeft: Radius.circular(50))),
+                      color: Color.fromRGBO(160, 199, 235, 1),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        bottomLeft: Radius.circular(50),
+                      ),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '29%',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40,
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black12,
-                                  offset: Offset(-2, -2),
-                                  blurRadius: 5),
-                            ],
-                          ),
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('EspData')
+                              .doc('DHT11')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
+                            }
+                            if (snapshot.hasData && snapshot.data!.exists) {
+                              // Access the data from the document
+                              Map<String, dynamic>? data =
+                                  snapshot.data!.data() as Map<String, dynamic>?;
+
+                              if (data != null) {
+                                // Access the specific field for humidity
+                                String humidityValue = data['Humidity'] ?? '0'; // Assuming 'Humidity' is the field name in Firestore
+                                double humidity= double.tryParse(humidityValue) ?? 0;
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${humidity.toInt()}%',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 40,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black12,
+                                            offset: Offset(-2, -2),
+                                            blurRadius: 5,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      'Kelembaban',
+                                      style: TextStyle(color: Colors.white, fontSize: 15),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                // Handle the case when data is null
+                                return Text('Data is null');
+                              }
+                            } else {
+                              // Handle the case when the document doesn't exist
+                              return Text('Document does not exist');
+                            }
+                          },
                         ),
-                        Text(
-                          'Lembab',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        )
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -237,14 +316,14 @@ class _MainpageState extends State<mainpage> {
                     padding: const EdgeInsets.only(left: 20),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      image:
-                          DecorationImage(image: AssetImage('assets/Auto.png')),
+                      image: DecorationImage(image: AssetImage('assets/Auto.png')),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                            blurRadius: 2.0,
-                            offset: Offset(0.0, 1.5)),
+                          color: Color.fromRGBO(0, 0, 0, 0.4),
+                          blurRadius: 2.0,
+                          offset: Offset(0.0, 1.5),
+                        ),
                       ],
                     ),
                   ),
@@ -254,14 +333,14 @@ class _MainpageState extends State<mainpage> {
                     margin: const EdgeInsets.only(top: 60),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      image: DecorationImage(
-                          image: AssetImage('assets/Power.png')),
+                      image: DecorationImage(image: AssetImage('assets/Power.png')),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                            blurRadius: 2.0,
-                            offset: Offset(0.0, 1.5)),
+                          color: Color.fromRGBO(0, 0, 0, 0.4),
+                          blurRadius: 2.0,
+                          offset: Offset(0.0, 1.5),
+                        ),
                       ],
                     ),
                   ),
@@ -271,14 +350,14 @@ class _MainpageState extends State<mainpage> {
                     padding: const EdgeInsets.only(right: 20),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      image: DecorationImage(
-                          image: AssetImage('assets/Manual.png')),
+                      image: DecorationImage(image: AssetImage('assets/Manual.png')),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                            blurRadius: 2.0,
-                            offset: Offset(0.0, 1.5)),
+                          color: Color.fromRGBO(0, 0, 0, 0.4),
+                          blurRadius: 2.0,
+                          offset: Offset(0.0, 1.5),
+                        ),
                       ],
                     ),
                     child: GestureDetector(
@@ -319,9 +398,10 @@ class _MainpageState extends State<mainpage> {
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
                           BoxShadow(
-                              color: Color.fromRGBO(0, 0, 0, 0.4),
-                              blurRadius: 2.0,
-                              offset: Offset(0.0, 1.5)),
+                            color: Color.fromRGBO(0, 0, 0, 0.4),
+                            blurRadius: 2.0,
+                            offset: Offset(0.0, 1.5),
+                          ),
                         ],
                       ),
                       child: Image.asset('assets/Stat.png'),
@@ -337,9 +417,10 @@ class _MainpageState extends State<mainpage> {
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
                           BoxShadow(
-                              color: Color.fromRGBO(0, 0, 0, 0.4),
-                              blurRadius: 2.0,
-                              offset: Offset(0.0, 1.5)),
+                            color: Color.fromRGBO(0, 0, 0, 0.4),
+                            blurRadius: 2.0,
+                            offset: Offset(0.0, 1.5),
+                          ),
                         ],
                       ),
                       child: Image.asset('assets/Fan.png'),
@@ -356,7 +437,7 @@ class _MainpageState extends State<mainpage> {
 }
 
 class SliderWidget extends StatefulWidget {
-  const SliderWidget({super.key});
+  const SliderWidget({Key? key}) : super(key: key);
 
   @override
   _SliderWidgetState createState() => _SliderWidgetState();
