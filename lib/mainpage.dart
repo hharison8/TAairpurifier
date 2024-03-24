@@ -87,7 +87,7 @@ class _mainpageState extends State<mainpage> {
                 boxShadow: [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.4),
-                    blurRadius: 2.0,
+                    blurRadius: 2,
                     offset: Offset(0.0, 1.5),
                   ),
                 ],
@@ -99,7 +99,7 @@ class _mainpageState extends State<mainpage> {
                     width: 120,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(160, 190, 235, 1),
+                      color: Color.fromRGBO(160, 199, 235, 1),
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(50),
                         bottomRight: Radius.circular(50),
@@ -119,13 +119,14 @@ class _mainpageState extends State<mainpage> {
                             }
                             if (snapshot.hasData && snapshot.data!.exists) {
                               // Access the data from the document
-                              Map<String, dynamic>? data =
-                                  snapshot.data!.data() as Map<String, dynamic>?;
+                              Map<String, dynamic>? data = snapshot.data!.data()
+                                  as Map<String, dynamic>?;
 
                               if (data != null) {
                                 // Access the specific fields
                                 String tempValue = data['Temperature'] ?? '0.0';
-                                double temperature = double.tryParse(tempValue) ?? 0;
+                                double temperature =
+                                    double.tryParse(tempValue) ?? 0;
 
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -179,8 +180,8 @@ class _mainpageState extends State<mainpage> {
                             }
                             if (snapshot.hasData && snapshot.data!.exists) {
                               // Access the data from the document
-                              Map<String, dynamic>? data =
-                                  snapshot.data!.data() as Map<String, dynamic>?;
+                              Map<String, dynamic>? data = snapshot.data!.data()
+                                  as Map<String, dynamic>?;
 
                               if (data != null) {
                                 // Access the specific fields
@@ -197,9 +198,9 @@ class _mainpageState extends State<mainpage> {
                                       fontSize: 40,
                                       shadows: [
                                         Shadow(
-                                          color: Colors.black,
-                                          blurRadius: 2,
-                                          offset: Offset(0, 2),
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 5,
+                                          offset: Offset(-2, -2),
                                         ),
                                       ],
                                     ),
@@ -222,9 +223,9 @@ class _mainpageState extends State<mainpage> {
                             fontSize: 15,
                             shadows: [
                               Shadow(
-                                color: Colors.black,
-                                blurRadius: 2,
-                                offset: Offset(0, 2),
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 5,
+                                offset: Offset(-2, -2),
                               ),
                             ],
                           ),
@@ -256,13 +257,15 @@ class _mainpageState extends State<mainpage> {
                             }
                             if (snapshot.hasData && snapshot.data!.exists) {
                               // Access the data from the document
-                              Map<String, dynamic>? data =
-                                  snapshot.data!.data() as Map<String, dynamic>?;
+                              Map<String, dynamic>? data = snapshot.data!.data()
+                                  as Map<String, dynamic>?;
 
                               if (data != null) {
                                 // Access the specific field for humidity
-                                String humidityValue = data['Humidity'] ?? '0'; // Assuming 'Humidity' is the field name in Firestore
-                                double humidity= double.tryParse(humidityValue) ?? 0;
+                                String humidityValue = data['Humidity'] ??
+                                    '0'; // Assuming 'Humidity' is the field name in Firestore
+                                double humidity =
+                                    double.tryParse(humidityValue) ?? 0;
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -283,7 +286,8 @@ class _mainpageState extends State<mainpage> {
                                     ),
                                     Text(
                                       'Kelembaban',
-                                      style: TextStyle(color: Colors.white, fontSize: 15),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 15),
                                     ),
                                   ],
                                 );
@@ -316,7 +320,8 @@ class _mainpageState extends State<mainpage> {
                     padding: const EdgeInsets.only(left: 20),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      image: DecorationImage(image: AssetImage('assets/Auto.png')),
+                      image:
+                          DecorationImage(image: AssetImage('assets/Auto.png')),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
@@ -333,7 +338,8 @@ class _mainpageState extends State<mainpage> {
                     margin: const EdgeInsets.only(top: 60),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      image: DecorationImage(image: AssetImage('assets/Power.png')),
+                      image: DecorationImage(
+                          image: AssetImage('assets/Power.png')),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
@@ -350,7 +356,8 @@ class _mainpageState extends State<mainpage> {
                     padding: const EdgeInsets.only(right: 20),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      image: DecorationImage(image: AssetImage('assets/Manual.png')),
+                      image: DecorationImage(
+                          image: AssetImage('assets/Manual.png')),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
@@ -388,7 +395,7 @@ class _mainpageState extends State<mainpage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/');
+                      Navigator.pushNamed(context, '/statistic');
                     },
                     child: Container(
                       width: 150,
