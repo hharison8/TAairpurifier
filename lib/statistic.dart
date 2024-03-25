@@ -16,11 +16,23 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
     const Tab(text: '24 Jam'),
   ];
 
+  late LineChartData _data1;
+  late LineChartData _data2;
+  late LineChartData _data3;
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
-    _tabController.index = 2;
+    _tabController = TabController(length: _tabs.length, vsync: this);
+    _tabController.index = 0;
+
+    final gridData = getGridData();
+    final titlesData = getTitlesData();
+    final boarderData = getBoarderData();
+
+    _data1 = getSampleData1(gridData, titlesData, boarderData);
+    _data2 = getSampleData2(gridData, titlesData, boarderData);
+    _data3 = getSampleData3(gridData, titlesData, boarderData);
   }
 
   @override
@@ -32,6 +44,7 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
             const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
+                color: Color.fromRGBO(178, 209, 238, 1),
                 border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(80),
               ),
@@ -42,9 +55,14 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
                 labelStyle: const TextStyle(fontSize: 18),
                 unselectedLabelColor: Colors.black,
                 indicator: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    border: Border.all(width: 1),
-                    borderRadius: BorderRadius.circular(80)),
+                  color: Color.fromRGBO(160, 199, 235, 1),
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(80),
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                onTap: (index) {
+                  setState(() {});
+                },
               ),
             ),
             SizedBox(
@@ -54,51 +72,141 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
               color: Colors.white,
               height: 400,
               width: 400,
-              child: _LineChart(),
-            )
+              child: _LineChart(
+                data: _tabController.index == 0
+                    ? _data1
+                    : _tabController.index == 1
+                        ? _data2
+                        : _data3,
+              ),
+            ),
+            SizedBox(
+              width: 400,
+              height: 80,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 150,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.4),
+                            blurRadius: 2.0,
+                            offset: Offset(0.0, 1.5),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset('assets/Stat.png'),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/mainpage');
+                    },
+                    child: Container(
+                      width: 150,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.4),
+                            blurRadius: 2.0,
+                            offset: Offset(0.0, 1.5),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset('assets/Fan.png'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-}
 
-class _LineChart extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return LineChart(sampleData1);
-  }
-}
-
-LineChartData get sampleData1 => LineChartData(
+  LineChartData getSampleData1(
+      FlGridData gridData, FlTitlesData titlesData, FlBorderData boarderData) {
+    return LineChartData(
       gridData: gridData,
       titlesData: titlesData,
       borderData: boarderData,
-      lineBarsData: LineBarsData,
+      lineBarsData: LineBarsData1,
       minX: 0,
-      maxX: 10,
+      maxX: 25,
       minY: 0,
       maxY: 5,
     );
+  }
 
-List<LineChartBarData> get LineBarsData => [LineChartBarData1];
-
-FlTitlesData get titlesData => FlTitlesData(
-      bottomTitles: AxisTitles(
-        sideTitles: bottomTitles,
-      ),
-      rightTitles: AxisTitles(
-        sideTitles: SideTitles(showTitles: false),
-      ),
-      topTitles: AxisTitles(
-        sideTitles: SideTitles(showTitles: false),
-      ),
-      leftTitles: AxisTitles(
-        sideTitles: leftTitles,
-      ),
+  LineChartData getSampleData2(
+      FlGridData gridData, FlTitlesData titlesData, FlBorderData boarderData) {
+    return LineChartData(
+      gridData: gridData,
+      titlesData: titlesData,
+      borderData: boarderData,
+      lineBarsData: LineBarsData2,
+      minX: 0,
+      maxX: 25,
+      minY: 0,
+      maxY: 10,
     );
+  }
 
-Widget leftTitlesWidget(double value, TitleMeta meta) {
+  LineChartData getSampleData3(
+      FlGridData gridData, FlTitlesData titlesData, FlBorderData boarderData) {
+    return LineChartData(
+      gridData: gridData,
+      titlesData: titlesData,
+      borderData: boarderData,
+      lineBarsData: LineBarsData3,
+      minX: 0,
+      maxX: 25,
+      minY: 0,
+      maxY: 15,
+    );
+  }
+}
+
+class _LineChart extends StatelessWidget {
+  final LineChartData data;
+
+  const _LineChart({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return LineChart(data);
+  }
+}
+
+FlTitlesData getTitlesData() {
+  return FlTitlesData(
+    bottomTitles: AxisTitles(
+      sideTitles: bottomTitles,
+    ),
+    rightTitles: AxisTitles(
+      sideTitles: rightTitles,
+    ),
+    topTitles: AxisTitles(
+      sideTitles: SideTitles(showTitles: false),
+    ),
+    leftTitles: AxisTitles(
+      sideTitles: SideTitles(showTitles: false),
+    ),
+  );
+}
+
+Widget rightTitlesWidget(double value, TitleMeta meta) {
   const style =
       TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey);
   String text;
@@ -128,8 +236,8 @@ Widget leftTitlesWidget(double value, TitleMeta meta) {
   );
 }
 
-SideTitles get leftTitles => SideTitles(
-    getTitlesWidget: leftTitlesWidget,
+SideTitles get rightTitles => SideTitles(
+    getTitlesWidget: rightTitlesWidget,
     showTitles: true,
     interval: 1,
     reservedSize: 40);
@@ -139,14 +247,17 @@ Widget bottomTitlesWidget(double value, TitleMeta meta) {
       TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey);
   Widget text;
   switch (value.toInt()) {
-    case 2:
-      text = const Text('2020', style: style);
+    case 5:
+      text = const Text('15', style: style);
       break;
-    case 7:
-      text = const Text('2021', style: style);
+    case 10:
+      text = const Text('30', style: style);
       break;
-    case 12:
-      text = const Text('2022', style: style);
+    case 15:
+      text = const Text('45', style: style);
+      break;
+    case 20:
+      text = const Text('60', style: style);
       break;
     default:
       text = const Text('');
@@ -154,7 +265,7 @@ Widget bottomTitlesWidget(double value, TitleMeta meta) {
   }
   return SideTitleWidget(
     axisSide: meta.axisSide,
-    space: 10,
+    space: 6,
     child: text,
   );
 }
@@ -165,31 +276,99 @@ SideTitles get bottomTitles => SideTitles(
       getTitlesWidget: bottomTitlesWidget,
     );
 
-FlGridData get gridData => FlGridData(show: false);
-FlBorderData get boarderData => FlBorderData(
-    show: true,
-    border: Border(
-      bottom: BorderSide(color: Colors.grey, width: 4),
-      left: const BorderSide(color: Colors.grey),
-      right: const BorderSide(color: Colors.transparent),
-      top: const BorderSide(color: Colors.transparent),
-    ));
+FlGridData getGridData() {
+  return FlGridData(show: true);
+}
 
-LineChartBarData get LineChartBarData1 => LineChartBarData(
-      isCurved: true,
-      color: Colors.purple,
-      barWidth: 6,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-      spots: const [
-        FlSpot(1, 1),
-        FlSpot(3, 1.5),
-        FlSpot(5, 1.6),
-        FlSpot(7, 3.4),
-        FlSpot(10, 2),
-        FlSpot(12, 2.5),
-        FlSpot(13, 1.6),
-        FlSpot(1, 1),
-      ],
-    );
+FlBorderData getBoarderData() {
+  return FlBorderData(
+      show: true,
+      border: Border(
+        bottom: BorderSide(color: Colors.grey, width: 4),
+        left: const BorderSide(color: Colors.transparent),
+        right: const BorderSide(color: Colors.transparent),
+        top: const BorderSide(color: Colors.transparent),
+      ));
+}
+
+final LineChartBarData barData1 = LineChartBarData(
+  spots: [
+    FlSpot(0, 3),
+    FlSpot(2.6, 2),
+    FlSpot(4.9, 5),
+    FlSpot(6.8, 3.1),
+    FlSpot(8, 4),
+    FlSpot(9.5, 3),
+    FlSpot(11, 4),
+  ],
+  isCurved: true,
+  color: Colors.red,
+  barWidth: 5,
+  isStrokeCapRound: true,
+  belowBarData: BarAreaData(show: false),
+);
+
+final LineChartBarData barData2 = LineChartBarData(
+  spots: [
+    FlSpot(0, 1),
+    FlSpot(2.6, 3),
+    FlSpot(4.9, 4),
+    FlSpot(6.8, 2),
+    FlSpot(8, 3.5),
+    FlSpot(9.5, 2),
+    FlSpot(11, 2.5),
+  ],
+  isCurved: true,
+  color: Colors.blue,
+  barWidth: 5,
+  isStrokeCapRound: true,
+  belowBarData: BarAreaData(show: false),
+);
+
+final LineChartBarData barData3 = LineChartBarData(
+  spots: [
+    FlSpot(0, 2),
+    FlSpot(2.6, 1.5),
+    FlSpot(4.9, 3),
+    FlSpot(6.8, 2.5),
+    FlSpot(8, 3),
+    FlSpot(9.5, 2),
+    FlSpot(11, 2.5),
+  ],
+  isCurved: true,
+  color: Colors.green,
+  barWidth: 5,
+  isStrokeCapRound: true,
+  belowBarData: BarAreaData(show: false),
+);
+
+List<LineChartBarData> get LineBarsData1 => [LineChartBarData1];
+List<LineChartBarData> get LineBarsData2 => [LineChartBarData2];
+List<LineChartBarData> get LineBarsData3 => [LineChartBarData3];
+
+final LineChartBarData LineChartBarData1 = LineChartBarData(
+  spots: barData1.spots,
+  isCurved: barData1.isCurved,
+  color: Colors.black,
+  barWidth: barData1.barWidth,
+  isStrokeCapRound: barData1.isStrokeCapRound,
+  belowBarData: barData1.belowBarData,
+);
+
+final LineChartBarData LineChartBarData2 = LineChartBarData(
+  spots: barData2.spots,
+  isCurved: barData2.isCurved,
+  color: Colors.black,
+  barWidth: barData2.barWidth,
+  isStrokeCapRound: barData2.isStrokeCapRound,
+  belowBarData: barData2.belowBarData,
+);
+
+final LineChartBarData LineChartBarData3 = LineChartBarData(
+  spots: barData3.spots,
+  isCurved: barData3.isCurved,
+  color: Colors.black,
+  barWidth: barData3.barWidth,
+  isStrokeCapRound: barData3.isStrokeCapRound,
+  belowBarData: barData3.belowBarData,
+);
