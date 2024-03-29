@@ -10,6 +10,7 @@ class mainpage extends StatefulWidget {
 
 class _mainpageState extends State<mainpage> {
   bool _showSlider = false;
+  bool _isPowerOn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -308,76 +309,93 @@ class _mainpageState extends State<mainpage> {
               ),
             ),
             SizedBox(
-              width: 400,
-              height: 156,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    padding: const EdgeInsets.only(left: 20),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      image:
-                          DecorationImage(image: AssetImage('assets/Auto.png')),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.4),
-                          blurRadius: 2.0,
-                          offset: Offset(0.0, 1.5),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    margin: const EdgeInsets.only(top: 60),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      image: DecorationImage(
-                          image: AssetImage('assets/Power.png')),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.4),
-                          blurRadius: 2.0,
-                          offset: Offset(0.0, 1.5),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 80,
-                    height: 80,
-                    padding: const EdgeInsets.only(right: 20),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      image: DecorationImage(
-                          image: AssetImage('assets/Manual.png')),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.4),
-                          blurRadius: 2.0,
-                          offset: Offset(0.0, 1.5),
-                        ),
-                      ],
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _showSlider = !_showSlider;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+  width: 400,
+  height: 156,
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        width: 80,
+        height: 80,
+        padding: const EdgeInsets.only(left: 20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(image: AssetImage('assets/Auto.png')),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.4),
+              blurRadius: 2.0,
+              offset: Offset(0.0, 1.5),
             ),
+          ],
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          setState(() {
+            _isPowerOn = !_isPowerOn;
+          });
+
+          int powerStateValue = _isPowerOn ? 1 : 0; 
+
+          FirebaseFirestore.instance
+              .collection('EspData')
+              .doc('Sent From Mobile')
+              .update({'powerState': powerStateValue})
+              .then((_) => print('Power state updated successfully'))
+              .catchError((error) => print('Failed to update power state: $error'));
+        },
+        child: Container(
+          width: 100,
+          height: 100,
+          margin: const EdgeInsets.only(top: 60),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            image: DecorationImage(
+              image: AssetImage('assets/Power.png'),
+            ),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.4),
+                blurRadius: 2.0,
+                offset: Offset(0.0, 1.5),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Container(
+        width: 80,
+        height: 80,
+        padding: const EdgeInsets.only(right: 20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+            image: AssetImage('assets/Manual.png'),
+          ),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.4),
+              blurRadius: 2.0,
+              offset: Offset(0.0, 1.5),
+            ),
+          ],
+        ),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              _showSlider = !_showSlider;
+            });
+          }
+        ),
+      ),
+    ],
+  ),
+),
             if (_showSlider)
               const SizedBox(
                 width: 400,

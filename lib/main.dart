@@ -14,12 +14,12 @@ Future main() async {
             appId: "1:245560806155:android:47831159404017c50a300e",
             messagingSenderId: "245560806155",
             projectId: "ta-air-purifier",
+             databaseURL: "https://ta-air-purifier-default-rtdb.asia-southeast1.firebasedatabase.app",
             storageBucket: "ta-air-purifier.appspot.com"));
   } else {
     await Firebase.initializeApp();
   }
 
-  await Firebase.initializeApp();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     onGenerateRoute: RouteGenerator.generateRoute,
