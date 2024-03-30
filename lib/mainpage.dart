@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class mainpage extends StatefulWidget {
   const mainpage({Key? key}) : super(key: key);
@@ -99,7 +99,7 @@ class _mainpageState extends State<mainpage> {
                   Container(
                     width: 120,
                     height: 100,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color.fromRGBO(160, 199, 235, 1),
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(50),
@@ -116,7 +116,7 @@ class _mainpageState extends State<mainpage> {
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                             if (snapshot.hasData && snapshot.data!.exists) {
                               // Access the data from the document
@@ -134,7 +134,7 @@ class _mainpageState extends State<mainpage> {
                                   children: [
                                     Text(
                                       '${temperature.toInt()}°C',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 40,
@@ -151,15 +151,15 @@ class _mainpageState extends State<mainpage> {
                                 );
                               } else {
                                 // Handle the case when data is null
-                                return Text('Data is null');
+                                return const Text('Data is null');
                               }
                             } else {
                               // Handle the case when the document doesn't exist
-                              return Text('Document does not exist');
+                              return const Text('Document does not exist');
                             }
                           },
                         ),
-                        Text(
+                        const Text(
                           'Suhu',
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
@@ -177,7 +177,7 @@ class _mainpageState extends State<mainpage> {
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                             if (snapshot.hasData && snapshot.data!.exists) {
                               // Access the data from the document
@@ -201,7 +201,7 @@ class _mainpageState extends State<mainpage> {
                                         Shadow(
                                           color: Colors.black.withOpacity(0.2),
                                           blurRadius: 5,
-                                          offset: Offset(-2, -2),
+                                          offset: const Offset(-2, -2),
                                         ),
                                       ],
                                     ),
@@ -209,11 +209,11 @@ class _mainpageState extends State<mainpage> {
                                 );
                               } else {
                                 // Handle the case when data is null
-                                return Text('Data is null');
+                                return const Text('Data is null');
                               }
                             } else {
                               // Handle the case when the document doesn't exist
-                              return Text('Document does not exist');
+                              return const Text('Document does not exist');
                             }
                           },
                         ),
@@ -226,7 +226,7 @@ class _mainpageState extends State<mainpage> {
                               Shadow(
                                 color: Colors.black.withOpacity(0.2),
                                 blurRadius: 5,
-                                offset: Offset(-2, -2),
+                                offset: const Offset(-2, -2),
                               ),
                             ],
                           ),
@@ -237,7 +237,7 @@ class _mainpageState extends State<mainpage> {
                   Container(
                     width: 120,
                     height: 100,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color.fromRGBO(160, 199, 235, 1),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50),
@@ -254,7 +254,7 @@ class _mainpageState extends State<mainpage> {
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                             if (snapshot.hasData && snapshot.data!.exists) {
                               // Access the data from the document
@@ -272,7 +272,7 @@ class _mainpageState extends State<mainpage> {
                                   children: [
                                     Text(
                                       '${humidity.toInt()}%',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 40,
@@ -285,7 +285,7 @@ class _mainpageState extends State<mainpage> {
                                         ],
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       'Kelembaban',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15),
@@ -294,11 +294,11 @@ class _mainpageState extends State<mainpage> {
                                 );
                               } else {
                                 // Handle the case when data is null
-                                return Text('Data is null');
+                                return const Text('Data is null');
                               }
                             } else {
                               // Handle the case when the document doesn't exist
-                              return Text('Document does not exist');
+                              return const Text('Document does not exist');
                             }
                           },
                         ),
@@ -418,7 +418,7 @@ class _mainpageState extends State<mainpage> {
                     child: Container(
                       width: 150,
                       height: 60,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
@@ -437,7 +437,7 @@ class _mainpageState extends State<mainpage> {
                     child: Container(
                       width: 150,
                       height: 60,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
@@ -486,6 +486,14 @@ class _SliderWidgetState extends State<SliderWidget> {
           min: 0.0,
           max: 100.0,
           divisions: 100,
+          onChangeEnd: (double value) {
+          FirebaseFirestore.instance
+          .collection('EspData')
+          .doc('Sent From Mobile')
+          .update({'sliderValue': value.round()})
+          .then((_) => print('Slider value updated successfully'))
+          .catchError((error) => print('Failed to update slider value: $error'));
+          },
         ),
       ],
     );

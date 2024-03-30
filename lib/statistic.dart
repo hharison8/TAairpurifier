@@ -44,7 +44,7 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
             const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(178, 209, 238, 1),
+                color: const Color.fromRGBO(178, 209, 238, 1),
                 border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(80),
               ),
@@ -55,7 +55,7 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
                 labelStyle: const TextStyle(fontSize: 18),
                 unselectedLabelColor: Colors.black,
                 indicator: BoxDecoration(
-                  color: Color.fromRGBO(160, 199, 235, 1),
+                  color: const Color.fromRGBO(160, 199, 235, 1),
                   border: Border.all(width: 1),
                   borderRadius: BorderRadius.circular(80),
                 ),
@@ -65,7 +65,7 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
@@ -91,7 +91,7 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
                     child: Container(
                       width: 150,
                       height: 60,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
@@ -112,7 +112,7 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
                     child: Container(
                       width: 150,
                       height: 60,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
@@ -283,11 +283,11 @@ FlGridData getGridData() {
 FlBorderData getBoarderData() {
   return FlBorderData(
       show: true,
-      border: Border(
+      border: const Border(
         bottom: BorderSide(color: Colors.grey, width: 4),
-        left: const BorderSide(color: Colors.transparent),
-        right: const BorderSide(color: Colors.transparent),
-        top: const BorderSide(color: Colors.transparent),
+        left: BorderSide(color: Colors.transparent),
+        right: BorderSide(color: Colors.transparent),
+        top: BorderSide(color: Colors.transparent),
       ));
 }
 

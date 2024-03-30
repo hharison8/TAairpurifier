@@ -20,7 +20,7 @@ Future main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     onGenerateRoute: RouteGenerator.generateRoute,
   ));
