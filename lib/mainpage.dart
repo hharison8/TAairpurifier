@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/statistic.dart';
 
 class mainpage extends StatefulWidget {
   const mainpage({Key? key}) : super(key: key);
@@ -12,10 +14,47 @@ class _mainpageState extends State<mainpage> {
   bool _showSlider = false;
   bool _isPowerOn = false;
 
+  void _onItemTapped(int index) {
+    setState(() {});
+
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Statistic()),
+      );
+    } else if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => mainpage()),
+      );
+    }
+  }
+
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _currentIndex,
+        backgroundColor: Colors.transparent,
+        color: Colors.white,
+        animationDuration: Duration(milliseconds: 300),
+        onTap: _onItemTapped,
+        items: const [
+          Icon(
+            Icons.home,
+            color: Color.fromRGBO(178, 209, 238, 1),
+            size: 50,
+          ),
+          Icon(
+            Icons.bar_chart,
+            color: Color.fromRGBO(178, 209, 238, 1),
+            size: 50,
+          ),
+        ],
+      ),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: const Color.fromRGBO(255, 255, 255, 255),
@@ -309,137 +348,56 @@ class _mainpageState extends State<mainpage> {
               ),
             ),
             SizedBox(
-  width: 400,
-  height: 156,
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        width: 80,
-        height: 80,
-        padding: const EdgeInsets.only(left: 20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(image: AssetImage('assets/Auto.png')),
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.4),
-              blurRadius: 2.0,
-              offset: Offset(0.0, 1.5),
-            ),
-          ],
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          setState(() {
-            _isPowerOn = !_isPowerOn;
-          });
-
-          int powerStateValue = _isPowerOn ? 1 : 0; 
-
-          FirebaseFirestore.instance
-              .collection('EspData')
-              .doc('Sent From Mobile')
-              .update({'powerState': powerStateValue})
-              .then((_) => print('Power state updated successfully'))
-              .catchError((error) => print('Failed to update power state: $error'));
-        },
-        child: Container(
-          width: 100,
-          height: 100,
-          margin: const EdgeInsets.only(top: 60),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            image: DecorationImage(
-              image: AssetImage('assets/Power.png'),
-            ),
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.4),
-                blurRadius: 2.0,
-                offset: Offset(0.0, 1.5),
-              ),
-            ],
-          ),
-        ),
-      ),
-      Container(
-        width: 80,
-        height: 80,
-        padding: const EdgeInsets.only(right: 20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-            image: AssetImage('assets/Manual.png'),
-          ),
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.4),
-              blurRadius: 2.0,
-              offset: Offset(0.0, 1.5),
-            ),
-          ],
-        ),
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              _showSlider = !_showSlider;
-            });
-          }
-        ),
-      ),
-    ],
-  ),
-),
-            if (_showSlider)
-              const SizedBox(
-                width: 400,
-                height: 80,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [SliderWidget()],
-                ),
-              ),
-            SizedBox(
               width: 400,
-              height: 80,
+              height: 156,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/statistic');
-                    },
-                    child: Container(
-                      width: 150,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                            blurRadius: 2.0,
-                            offset: Offset(0.0, 1.5),
-                          ),
-                        ],
-                      ),
-                      child: Image.asset('assets/Stat.png'),
+                  Container(
+                    width: 80,
+                    height: 80,
+                    padding: const EdgeInsets.only(left: 20),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      image:
+                          DecorationImage(image: AssetImage('assets/Auto.png')),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.4),
+                          blurRadius: 2.0,
+                          offset: Offset(0.0, 1.5),
+                        ),
+                      ],
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        _isPowerOn = !_isPowerOn;
+                      });
+
+                      int powerStateValue = _isPowerOn ? 1 : 0;
+
+                      FirebaseFirestore.instance
+                          .collection('EspData')
+                          .doc('Sent From Mobile')
+                          .update({'powerState': powerStateValue})
+                          .then(
+                              (_) => print('Power state updated successfully'))
+                          .catchError((error) =>
+                              print('Failed to update power state: $error'));
+                    },
                     child: Container(
-                      width: 150,
-                      height: 60,
+                      width: 100,
+                      height: 100,
+                      margin: const EdgeInsets.only(top: 60),
                       decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        image: DecorationImage(
+                            image: AssetImage('assets/Power.png')),
+                        shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
                             color: Color.fromRGBO(0, 0, 0, 0.4),
@@ -448,12 +406,46 @@ class _mainpageState extends State<mainpage> {
                           ),
                         ],
                       ),
-                      child: Image.asset('assets/Fan.png'),
+                    ),
+                  ),
+                  Container(
+                    width: 80,
+                    height: 80,
+                    padding: const EdgeInsets.only(right: 20),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      image: DecorationImage(
+                        image: AssetImage('assets/Manual.png'),
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.4),
+                          blurRadius: 2.0,
+                          offset: Offset(0.0, 1.5),
+                        ),
+                      ],
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _showSlider = !_showSlider;
+                        });
+                      },
                     ),
                   ),
                 ],
               ),
             ),
+            if (_showSlider)
+              const SizedBox(
+                width: 400,
+                height: 50,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [SliderWidget()],
+                ),
+              ),
           ],
         ),
       ),
@@ -487,12 +479,13 @@ class _SliderWidgetState extends State<SliderWidget> {
           max: 100.0,
           divisions: 100,
           onChangeEnd: (double value) {
-          FirebaseFirestore.instance
-          .collection('EspData')
-          .doc('Sent From Mobile')
-          .update({'sliderValue': value.round()})
-          .then((_) => print('Slider value updated successfully'))
-          .catchError((error) => print('Failed to update slider value: $error'));
+            FirebaseFirestore.instance
+                .collection('EspData')
+                .doc('Sent From Mobile')
+                .update({'sliderValue': value.round()})
+                .then((_) => print('Slider value updated successfully'))
+                .catchError(
+                    (error) => print('Failed to update slider value: $error'));
           },
         ),
       ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_application_1/mainpage.dart';
 
 class Statistic extends StatefulWidget {
   const Statistic({super.key});
@@ -38,24 +40,25 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
       body: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(178, 209, 238, 1),
+                color: Colors.white,
                 border: Border.all(width: 1),
                 borderRadius: BorderRadius.circular(80),
               ),
               child: TabBar(
                 controller: _tabController,
                 tabs: _tabs,
-                labelColor: Colors.white,
+                labelColor: Colors.black,
                 labelStyle: const TextStyle(fontSize: 18),
                 unselectedLabelColor: Colors.black,
                 indicator: BoxDecoration(
-                  color: const Color.fromRGBO(160, 199, 235, 1),
+                  color: Colors.white,
                   border: Border.all(width: 1),
                   borderRadius: BorderRadius.circular(80),
                 ),
@@ -80,57 +83,28 @@ class _StatisticState extends State<Statistic> with TickerProviderStateMixin {
                         : _data3,
               ),
             ),
-            SizedBox(
-              width: 400,
-              height: 80,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 150,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                            blurRadius: 2.0,
-                            offset: Offset(0.0, 1.5),
-                          ),
-                        ],
-                      ),
-                      child: Image.asset('assets/Stat.png'),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/mainpage');
-                    },
-                    child: Container(
-                      width: 150,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                            blurRadius: 2.0,
-                            offset: Offset(0.0, 1.5),
-                          ),
-                        ],
-                      ),
-                      child: Image.asset('assets/Fan.png'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        index: 1,
+        backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
+        color: Colors.white,
+        buttonBackgroundColor: Colors.white,
+        animationDuration: const Duration(milliseconds: 300),
+        items: const [
+          Icon(Icons.home, color: Color.fromRGBO(178, 209, 238, 1), size: 50),
+          Icon(Icons.bar_chart,
+              color: Color.fromRGBO(178, 209, 238, 1), size: 50),
+        ],
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const mainpage()),
+            );
+          }
+        },
       ),
     );
   }
