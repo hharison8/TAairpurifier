@@ -31,9 +31,22 @@ class _mainpageState extends State<mainpage> {
   }
 
   int _currentIndex = 0;
+  int number = 10;
 
   @override
   Widget build(BuildContext context) {
+    Color getColor() {
+      if (number > 50) {
+        return Colors.red;
+      } else if (number > 10) {
+        return Colors.yellow;
+      } else if (number > 0) {
+        return Colors.green;
+      } else {
+        return Color.fromRGBO(160, 199, 235, 1);
+      }
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
       bottomNavigationBar: CurvedNavigationBar(
@@ -72,8 +85,8 @@ class _mainpageState extends State<mainpage> {
               width: 280,
               height: 280,
               padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(160, 199, 235, 1),
+              decoration: BoxDecoration(
+                color: getColor(),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
@@ -89,12 +102,12 @@ class _mainpageState extends State<mainpage> {
                   color: Color.fromRGBO(255, 255, 255, 1),
                   shape: BoxShape.circle,
                 ),
-                child: const Column(
+                child: Column(
                   children: [
                     Text(
-                      '50',
+                      '${number}',
                       style: TextStyle(
-                        color: Color.fromRGBO(160, 199, 235, 1),
+                        color: getColor(),
                         fontWeight: FontWeight.bold,
                         fontSize: 100,
                         height: 0.95,
