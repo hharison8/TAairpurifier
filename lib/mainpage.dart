@@ -31,7 +31,7 @@ class _mainpageState extends State<mainpage> {
   }
 
   int _currentIndex = 0;
-  int number = 10;
+  int number = 11;
 
   @override
   Widget build(BuildContext context) {
