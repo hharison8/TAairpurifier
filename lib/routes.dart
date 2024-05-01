@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/bottomnav.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/mainpage.dart';
 import 'package:flutter_application_1/register.dart';
+import 'package:flutter_application_1/setting.dart';
 import 'package:flutter_application_1/statistic.dart';
 import 'package:flutter_application_1/statistic/co.dart';
 import 'package:flutter_application_1/statistic/lembab.dart';
@@ -30,6 +32,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SuhuPage());
       case '/kelembaban':
         return MaterialPageRoute(builder: (_) => const LembabPage());
+      case '/setting':
+        return MaterialPageRoute(builder: (_) => const Setting());
+      case '/bottomnav':
+        return MaterialPageRoute(builder: (_) => const bottomnav());
       default:
         return _errorRoute();
     }

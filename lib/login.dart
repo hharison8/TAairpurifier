@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
                             child: IconButton(
                               color: Colors.white,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/mainpage');
+                                Navigator.pushNamed(context, '/bottomnav');
                               },
                               icon: const Icon(Icons.arrow_forward),
                             ),
