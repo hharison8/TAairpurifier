@@ -14,6 +14,33 @@ class _mainpageState extends State<mainpage> {
   int number = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _fetchPMValue();
+  }
+
+  void _fetchPMValue() {
+    FirebaseFirestore.instance
+        .collection('EspData')
+        .doc('DHT11')
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data();
+        if (data != null) {
+          setState(() {
+            number = int.tryParse(
+                    (data as Map<String, dynamic>)['PM25'] as String? ?? '') ??
+                number;
+          });
+        }
+      }
+    }).catchError((error) {
+      print("Failed to fetch PM value: $error");
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Color getColor() {
       if (number > 300) {
@@ -85,63 +112,39 @@ class _mainpageState extends State<mainpage> {
                   );
                 },
                 child: Container(
-                    padding: const EdgeInsets.only(top: 64),
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Column(
-                      children: [
-                        StreamBuilder<DocumentSnapshot>(
-                            stream: FirebaseFirestore.instance
-                                .collection('EspData')
-                                .doc('DHT11')
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const CircularProgressIndicator();
-                              }
-                              if (snapshot.hasData && snapshot.data!.exists) {
-                                Map<String, dynamic>? data = snapshot.data!
-                                    .data() as Map<String, dynamic>?;
-
-                                if (data != null) {
-                                  String PMValue = data['PM25'] ?? '0';
-                                  number = int.tryParse(PMValue) ?? 0;
-
-                                  return Column(
-                                    children: [
-                                      Text(
-                                        '${number}',
-                                        style: TextStyle(
-                                            color: getColor(),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 100,
-                                            height: 0.95,
-                                            shadows: const [
-                                              Shadow(
-                                                color: Colors.black12,
-                                                offset: Offset(-2, -2),
-                                                blurRadius: 5,
-                                              )
-                                            ]),
-                                      ),
-                                      const Text(
-                                        'PM2.5',
-                                        style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(160, 199, 235, 1),
-                                          fontSize: 24,
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                              }
-                              return Container();
-                            }),
-                      ],
-                    )),
+                  padding: const EdgeInsets.only(top: 64),
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${number}',
+                        style: TextStyle(
+                          color: getColor(),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 100,
+                          height: 0.95,
+                          shadows: const [
+                            Shadow(
+                              color: Colors.black12,
+                              offset: Offset(-2, -2),
+                              blurRadius: 5,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Text(
+                        'PM2.5',
+                        style: TextStyle(
+                          color: Color.fromRGBO(160, 199, 235, 1),
+                          fontSize: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             Container(
