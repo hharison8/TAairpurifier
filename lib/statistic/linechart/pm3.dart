@@ -23,7 +23,7 @@ class _PM3State extends State<PM3> {
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50)), // Border container
+                  bottomRight: Radius.circular(50)),
             ),
             child: AspectRatio(
               aspectRatio: 1,
@@ -32,13 +32,15 @@ class _PM3State extends State<PM3> {
                   lineBarsData: [
                     LineChartBarData(
                       spots: const [
-                        FlSpot(0, 7),
-                        FlSpot(10, 48),
-                        FlSpot(20, 44),
-                        FlSpot(30, 32),
-                        FlSpot(40, 36),
-                        FlSpot(50, 46),
-                        FlSpot(60, 16),
+                        FlSpot(0, 70),
+                        FlSpot(3, 52),
+                        FlSpot(6, 480),
+                        FlSpot(9, 121),
+                        FlSpot(12, 44),
+                        FlSpot(15, 200),
+                        FlSpot(18, 302),
+                        FlSpot(21, 70),
+                        FlSpot(24, 36),
                       ],
                       isCurved: true,
                       dotData: const FlDotData(show: true),
@@ -51,9 +53,9 @@ class _PM3State extends State<PM3> {
                     ),
                   ],
                   minX: 0,
-                  maxX: 60,
+                  maxX: 24,
                   minY: 0,
-                  maxY: 50,
+                  maxY: 500,
                   borderData: FlBorderData(
                     show: true,
                     border: const Border(
@@ -66,33 +68,30 @@ class _PM3State extends State<PM3> {
                   titlesData: FlTitlesData(
                     show: true,
                     bottomTitles: AxisTitles(
-                      /*axisNameWidget: const Text('Menit'),*/
+                      axisNameWidget: const Text('Jam'),
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 30,
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 0:
-                              text = '0';
+                            case 1:
+                              text = '1';
+                              break;
+                            case 5:
+                              text = '5';
                               break;
                             case 10:
                               text = '10';
                               break;
+                            case 15:
+                              text = '15';
+                              break;
                             case 20:
                               text = '20';
                               break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
-                              break;
-                            case 50:
-                              text = '50';
-                              break;
-                            case 60:
-                              text = '';
+                            case 24:
+                              text = '24';
                               break;
                           }
                           return Text(text);
@@ -107,20 +106,35 @@ class _PM3State extends State<PM3> {
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 10:
-                              text = '10';
-                              break;
-                            case 20:
-                              text = '20';
-                              break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
-                              break;
                             case 50:
                               text = '50';
+                              break;
+                            case 100:
+                              text = '100';
+                              break;
+                            case 150:
+                              text = '150';
+                              break;
+                            case 200:
+                              text = '200';
+                              break;
+                            case 250:
+                              text = '250';
+                              break;
+                            case 300:
+                              text = '300';
+                              break;
+                            case 350:
+                              text = '350';
+                              break;
+                            case 400:
+                              text = '400';
+                              break;
+                            case 450:
+                              text = '450';
+                              break;
+                            case 500:
+                              text = '500';
                               break;
                           }
                           return Text(text);

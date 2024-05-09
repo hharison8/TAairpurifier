@@ -38,7 +38,7 @@ class _Lembab1State extends State<Lembab1> {
                         FlSpot(30, 36),
                         FlSpot(40, 25),
                         FlSpot(50, 46),
-                        FlSpot(60, 9),
+                        FlSpot(60, 90),
                       ],
                       isCurved: true,
                       dotData: const FlDotData(show: true),
@@ -53,7 +53,7 @@ class _Lembab1State extends State<Lembab1> {
                   minX: 0,
                   maxX: 60,
                   minY: 0,
-                  maxY: 50,
+                  maxY: 100,
                   borderData: FlBorderData(
                     show: true,
                     border: const Border(
@@ -66,7 +66,7 @@ class _Lembab1State extends State<Lembab1> {
                   titlesData: FlTitlesData(
                     show: true,
                     bottomTitles: AxisTitles(
-                      /*axisNameWidget: const Text('Menit'),*/
+                      axisNameWidget: const Text('Menit'),
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 30,
@@ -121,6 +121,21 @@ class _Lembab1State extends State<Lembab1> {
                               break;
                             case 50:
                               text = '50';
+                              break;
+                            case 60:
+                              text = '60';
+                              break;
+                            case 70:
+                              text = '70';
+                              break;
+                            case 80:
+                              text = '80';
+                              break;
+                            case 90:
+                              text = '90';
+                              break;
+                            case 100:
+                              text = '100';
                               break;
                           }
                           return Text(text);

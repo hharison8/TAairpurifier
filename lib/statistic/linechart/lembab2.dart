@@ -33,12 +33,18 @@ class _Lembab2State extends State<Lembab2> {
                     LineChartBarData(
                       spots: const [
                         FlSpot(0, 22),
-                        FlSpot(10, 44),
-                        FlSpot(20, 2),
-                        FlSpot(30, 45),
-                        FlSpot(40, 39),
-                        FlSpot(50, 46),
-                        FlSpot(60, 1),
+                        FlSpot(1, 44),
+                        FlSpot(2, 2),
+                        FlSpot(3, 45),
+                        FlSpot(4, 60),
+                        FlSpot(5, 46),
+                        FlSpot(6, 10),
+                        FlSpot(7, 44),
+                        FlSpot(8, 20),
+                        FlSpot(9, 45),
+                        FlSpot(10, 60),
+                        FlSpot(11, 46),
+                        FlSpot(12, 10),
                       ],
                       isCurved: true,
                       dotData: const FlDotData(show: true),
@@ -51,9 +57,9 @@ class _Lembab2State extends State<Lembab2> {
                     ),
                   ],
                   minX: 0,
-                  maxX: 60,
+                  maxX: 12,
                   minY: 0,
-                  maxY: 50,
+                  maxY: 100,
                   borderData: FlBorderData(
                     show: true,
                     border: const Border(
@@ -66,33 +72,48 @@ class _Lembab2State extends State<Lembab2> {
                   titlesData: FlTitlesData(
                     show: true,
                     bottomTitles: AxisTitles(
-                      /*axisNameWidget: const Text('Menit'),*/
+                      axisNameWidget: const Text('Jam'),
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 30,
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 0:
-                              text = '0';
+                            case 1:
+                              text = '1';
+                              break;
+                            case 2:
+                              text = '2';
+                              break;
+                            case 3:
+                              text = '3';
+                              break;
+                            case 4:
+                              text = '4';
+                              break;
+                            case 5:
+                              text = '5';
+                              break;
+                            case 6:
+                              text = '6';
+                              break;
+                            case 7:
+                              text = '7';
+                              break;
+                            case 8:
+                              text = '8';
+                              break;
+                            case 9:
+                              text = '9';
                               break;
                             case 10:
                               text = '10';
                               break;
-                            case 20:
-                              text = '20';
+                            case 11:
+                              text = '11';
                               break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
-                              break;
-                            case 50:
-                              text = '50';
-                              break;
-                            case 60:
-                              text = '';
+                            case 12:
+                              text = '12';
                               break;
                           }
                           return Text(text);
@@ -121,6 +142,21 @@ class _Lembab2State extends State<Lembab2> {
                               break;
                             case 50:
                               text = '50';
+                              break;
+                            case 60:
+                              text = '60';
+                              break;
+                            case 70:
+                              text = '70';
+                              break;
+                            case 80:
+                              text = '80';
+                              break;
+                            case 90:
+                              text = '90';
+                              break;
+                            case 100:
+                              text = '100';
                               break;
                           }
                           return Text(text);

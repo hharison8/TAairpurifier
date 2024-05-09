@@ -32,13 +32,13 @@ class _CO1State extends State<CO1> {
                   lineBarsData: [
                     LineChartBarData(
                       spots: const [
-                        FlSpot(0, 12),
+                        FlSpot(0, 120),
                         FlSpot(10, 44),
-                        FlSpot(20, 10),
-                        FlSpot(30, 25),
-                        FlSpot(40, 19),
+                        FlSpot(20, 190),
+                        FlSpot(30, 140),
+                        FlSpot(40, 250),
                         FlSpot(50, 35),
-                        FlSpot(60, 0),
+                        FlSpot(60, 410),
                       ],
                       isCurved: true,
                       dotData: const FlDotData(show: true),
@@ -53,7 +53,7 @@ class _CO1State extends State<CO1> {
                   minX: 0,
                   maxX: 60,
                   minY: 0,
-                  maxY: 50,
+                  maxY: 500,
                   borderData: FlBorderData(
                     show: true,
                     border: const Border(
@@ -92,7 +92,7 @@ class _CO1State extends State<CO1> {
                               text = '50';
                               break;
                             case 60:
-                              text = '';
+                              text = '60';
                               break;
                           }
                           return Text(text);
@@ -107,20 +107,38 @@ class _CO1State extends State<CO1> {
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 10:
-                              text = '10';
-                              break;
-                            case 20:
-                              text = '20';
-                              break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
+                            case 1:
+                              text = '1';
                               break;
                             case 50:
                               text = '50';
+                              break;
+                            case 100:
+                              text = '100';
+                              break;
+                            case 150:
+                              text = '150';
+                              break;
+                            case 200:
+                              text = '200';
+                              break;
+                            case 250:
+                              text = '250';
+                              break;
+                            case 300:
+                              text = '300';
+                              break;
+                            case 350:
+                              text = '350';
+                              break;
+                            case 400:
+                              text = '400';
+                              break;
+                            case 450:
+                              text = '450';
+                              break;
+                            case 500:
+                              text = '500';
                               break;
                           }
                           return Text(text);

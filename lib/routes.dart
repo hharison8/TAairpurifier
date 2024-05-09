@@ -36,6 +36,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const Setting());
       case '/bottomnav':
         return MaterialPageRoute(builder: (_) => const bottomnav());
+      case '/setting':
+        return MaterialPageRoute(builder: (_) => const Setting());
       default:
         return _errorRoute();
     }

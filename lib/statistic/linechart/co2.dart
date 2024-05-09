@@ -32,13 +32,19 @@ class _CO2State extends State<CO2> {
                   lineBarsData: [
                     LineChartBarData(
                       spots: const [
-                        FlSpot(0, 38),
-                        FlSpot(10, 33),
-                        FlSpot(20, 21),
-                        FlSpot(30, 26),
-                        FlSpot(40, 19),
-                        FlSpot(50, 44),
-                        FlSpot(60, 27),
+                        FlSpot(0, 308),
+                        FlSpot(1, 330),
+                        FlSpot(2, 201),
+                        FlSpot(3, 26),
+                        FlSpot(4, 109),
+                        FlSpot(5, 44),
+                        FlSpot(6, 207),
+                        FlSpot(7, 330),
+                        FlSpot(8, 201),
+                        FlSpot(9, 26),
+                        FlSpot(10, 109),
+                        FlSpot(11, 404),
+                        FlSpot(12, 270),
                       ],
                       isCurved: true,
                       dotData: const FlDotData(show: true),
@@ -51,9 +57,9 @@ class _CO2State extends State<CO2> {
                     ),
                   ],
                   minX: 0,
-                  maxX: 60,
+                  maxX: 12,
                   minY: 0,
-                  maxY: 50,
+                  maxY: 500,
                   borderData: FlBorderData(
                     show: true,
                     border: const Border(
@@ -73,26 +79,41 @@ class _CO2State extends State<CO2> {
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 0:
-                              text = '0';
+                            case 1:
+                              text = '1';
+                              break;
+                            case 2:
+                              text = '2';
+                              break;
+                            case 3:
+                              text = '3';
+                              break;
+                            case 4:
+                              text = '4';
+                              break;
+                            case 5:
+                              text = '5';
+                              break;
+                            case 6:
+                              text = '6';
+                              break;
+                            case 7:
+                              text = '7';
+                              break;
+                            case 8:
+                              text = '8';
+                              break;
+                            case 9:
+                              text = '9';
                               break;
                             case 10:
                               text = '10';
                               break;
-                            case 20:
-                              text = '20';
+                            case 11:
+                              text = '11';
                               break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
-                              break;
-                            case 50:
-                              text = '50';
-                              break;
-                            case 60:
-                              text = '';
+                            case 12:
+                              text = '12';
                               break;
                           }
                           return Text(text);
@@ -107,20 +128,35 @@ class _CO2State extends State<CO2> {
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 10:
-                              text = '10';
-                              break;
-                            case 20:
-                              text = '20';
-                              break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
-                              break;
                             case 50:
                               text = '50';
+                              break;
+                            case 100:
+                              text = '100';
+                              break;
+                            case 150:
+                              text = '150';
+                              break;
+                            case 200:
+                              text = '200';
+                              break;
+                            case 250:
+                              text = '250';
+                              break;
+                            case 300:
+                              text = '300';
+                              break;
+                            case 350:
+                              text = '350';
+                              break;
+                            case 400:
+                              text = '400';
+                              break;
+                            case 450:
+                              text = '450';
+                              break;
+                            case 500:
+                              text = '500';
                               break;
                           }
                           return Text(text);

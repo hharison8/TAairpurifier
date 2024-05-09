@@ -41,11 +41,12 @@ class _RegisterState extends State<Register> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(255, 255, 255, 1),
+                        fillColor: Colors.grey.shade300,
                         filled: true,
                         hintText: 'Username',
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                     const SizedBox(
@@ -53,11 +54,12 @@ class _RegisterState extends State<Register> {
                     ),
                     TextField(
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(255, 255, 255, 1),
+                        fillColor: Colors.grey.shade300,
                         filled: true,
                         hintText: 'Email',
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                     const SizedBox(
@@ -66,32 +68,16 @@ class _RegisterState extends State<Register> {
                     TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(255, 255, 255, 1),
+                        fillColor: Colors.grey.shade300,
                         filled: true,
                         hintText: 'Password',
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                     const SizedBox(
                       height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.end, // Mengatur teks ke kanan
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                fontFamily: "Railway",
-                                decoration: TextDecoration.underline,
-                                fontSize: 15,
-                                color: Color(0xff4c505b)),
-                          ),
-                        ),
-                      ],
                     ),
                     const SizedBox(
                       height: 10,
@@ -113,7 +99,7 @@ class _RegisterState extends State<Register> {
                             child: IconButton(
                               color: Colors.white,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/mainpage');
+                                Navigator.pushNamed(context, '/bottomnav');
                               },
                               icon: const Icon(Icons.arrow_forward),
                             ),

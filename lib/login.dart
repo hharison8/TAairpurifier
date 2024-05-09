@@ -51,11 +51,12 @@ class _LoginState extends State<Login> {
                   child: Column(children: [
                     TextField(
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(160, 199, 235, 1),
+                        fillColor: Colors.grey.shade300,
                         filled: true,
                         label: const Text("Email"),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                     const SizedBox(
@@ -64,11 +65,12 @@ class _LoginState extends State<Login> {
                     TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                        fillColor: const Color.fromRGBO(160, 199, 235, 1),
+                        fillColor: Colors.grey.shade300,
                         filled: true,
                         label: const Text("Password"),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                     const SizedBox(

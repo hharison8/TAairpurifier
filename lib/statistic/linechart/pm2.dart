@@ -32,13 +32,19 @@ class _PM2State extends State<PM2> {
                   lineBarsData: [
                     LineChartBarData(
                       spots: const [
-                        FlSpot(0, 41),
-                        FlSpot(10, 34),
-                        FlSpot(20, 1),
-                        FlSpot(30, 12),
-                        FlSpot(40, 7),
-                        FlSpot(50, 14),
-                        FlSpot(60, 39),
+                        FlSpot(0, 401),
+                        FlSpot(1, 340),
+                        FlSpot(2, 100),
+                        FlSpot(3, 120),
+                        FlSpot(4, 107),
+                        FlSpot(5, 140),
+                        FlSpot(6, 390),
+                        FlSpot(7, 410),
+                        FlSpot(8, 340),
+                        FlSpot(9, 100),
+                        FlSpot(10, 120),
+                        FlSpot(11, 70),
+                        FlSpot(12, 140),
                       ],
                       isCurved: true,
                       dotData: const FlDotData(show: true),
@@ -51,9 +57,9 @@ class _PM2State extends State<PM2> {
                     ),
                   ],
                   minX: 0,
-                  maxX: 60,
+                  maxX: 12,
                   minY: 0,
-                  maxY: 50,
+                  maxY: 500,
                   borderData: FlBorderData(
                     show: true,
                     border: const Border(
@@ -66,33 +72,48 @@ class _PM2State extends State<PM2> {
                   titlesData: FlTitlesData(
                     show: true,
                     bottomTitles: AxisTitles(
-                      /*axisNameWidget: const Text('Menit'),*/
+                      axisNameWidget: const Text('Jam'),
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 30,
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 0:
-                              text = '0';
+                            case 1:
+                              text = '1';
+                              break;
+                            case 2:
+                              text = '2';
+                              break;
+                            case 3:
+                              text = '3';
+                              break;
+                            case 4:
+                              text = '4';
+                              break;
+                            case 5:
+                              text = '5';
+                              break;
+                            case 6:
+                              text = '6';
+                              break;
+                            case 7:
+                              text = '7';
+                              break;
+                            case 8:
+                              text = '8';
+                              break;
+                            case 9:
+                              text = '9';
                               break;
                             case 10:
                               text = '10';
                               break;
-                            case 20:
-                              text = '20';
+                            case 11:
+                              text = '11';
                               break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
-                              break;
-                            case 50:
-                              text = '50';
-                              break;
-                            case 60:
-                              text = '';
+                            case 12:
+                              text = '12';
                               break;
                           }
                           return Text(text);
@@ -107,20 +128,35 @@ class _PM2State extends State<PM2> {
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
-                            case 10:
-                              text = '10';
-                              break;
-                            case 20:
-                              text = '20';
-                              break;
-                            case 30:
-                              text = '30';
-                              break;
-                            case 40:
-                              text = '40';
-                              break;
                             case 50:
                               text = '50';
+                              break;
+                            case 100:
+                              text = '100';
+                              break;
+                            case 150:
+                              text = '150';
+                              break;
+                            case 200:
+                              text = '200';
+                              break;
+                            case 250:
+                              text = '250';
+                              break;
+                            case 300:
+                              text = '300';
+                              break;
+                            case 350:
+                              text = '350';
+                              break;
+                            case 400:
+                              text = '400';
+                              break;
+                            case 450:
+                              text = '450';
+                              break;
+                            case 500:
+                              text = '500';
                               break;
                           }
                           return Text(text);
