@@ -5,7 +5,7 @@ class PM2 extends StatefulWidget {
   const PM2({Key? key}) : super(key: key);
 
   @override
-  _PM2State createState() => _PM2State();
+  State<PM2> createState() => _PM2State();
 }
 
 class _PM2State extends State<PM2> {

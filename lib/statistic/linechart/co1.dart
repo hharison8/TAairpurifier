@@ -5,7 +5,7 @@ class CO1 extends StatefulWidget {
   const CO1({Key? key}) : super(key: key);
 
   @override
-  _CO1State createState() => _CO1State();
+  State<CO1> createState() => _CO1State();
 }
 
 class _CO1State extends State<CO1> {
