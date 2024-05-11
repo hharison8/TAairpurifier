@@ -19,26 +19,29 @@ class _mainpageState extends State<mainpage> {
     _fetchPMValue();
   }
 
-  void _fetchPMValue() {
-    FirebaseFirestore.instance
-        .collection('EspData')
-        .doc('DHT11')
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        var data = documentSnapshot.data();
-        if (data != null) {
-          setState(() {
-            number = int.tryParse(
-                    (data as Map<String, dynamic>)['PM25'] as String? ?? '') ??
-                number;
-          });
-        }
+void _fetchPMValue() {
+  FirebaseFirestore.instance
+      .collection('EspData')
+      .doc('DHT11')
+      .snapshots()
+      .listen((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+      var data = documentSnapshot.data() as Map<String, dynamic>;
+      if (data != null) {
+        setState(() {
+          number = int.tryParse(data['PM25'] as String? ?? '') ?? 0;
+        });
       }
-    }).catchError((error) {
-      print("Failed to fetch PM value: $error");
-    });
-  }
+    } else {
+      print('Document does not exist');
+    }
+  }, onError: (error) {
+    print("Failed to fetch PM value: $error");
+  });
+}
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +123,7 @@ class _mainpageState extends State<mainpage> {
                   child: Column(
                     children: [
                       Text(
-                        '${number}',
+                        '$number',
                         style: TextStyle(
                           color: getColor(),
                           fontWeight: FontWeight.bold,
