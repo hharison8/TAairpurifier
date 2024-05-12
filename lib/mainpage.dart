@@ -410,12 +410,10 @@ void _fetchPMValue() {
                         _isPowerOn = !_isPowerOn;
                       });
 
-                      int powerStateValue = _isPowerOn ? 1 : 0;
-
                       FirebaseFirestore.instance
                           .collection('EspData')
                           .doc('Sent From Mobile')
-                          .update({'powerState': powerStateValue})
+                          .update({'powerState':_isPowerOn})
                           .then(
                               (_) => print('Power state updated successfully'))
                           .catchError((error) =>
