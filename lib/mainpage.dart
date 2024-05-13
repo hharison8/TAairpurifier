@@ -11,6 +11,7 @@ class mainpage extends StatefulWidget {
 class _mainpageState extends State<mainpage> {
   bool _showSlider = false;
   bool _isPowerOn = false;
+  bool _isAutoMode = false;
   int number = 0;
 
   @override
@@ -386,7 +387,19 @@ void _fetchPMValue() {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        _isAutoMode = !_isAutoMode;
+                      });
+                      FirebaseFirestore.instance
+                          .collection('EspData')
+                          .doc('Sent From Mobile')
+                          .update({'autoMode' : _isAutoMode})
+                          .then((_) => print('Auto mode update successfully'))
+                          .catchError((error) => print('Failed to update auto mode : $error'));
+                    },
+                  child :Container(
                     width: 80,
                     height: 80,
                     padding: const EdgeInsets.only(left: 20),
@@ -404,6 +417,7 @@ void _fetchPMValue() {
                       ],
                     ),
                   ),
+                ),
                   GestureDetector(
                     onTap: () {
                       setState(() {
