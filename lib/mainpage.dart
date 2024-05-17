@@ -44,6 +44,9 @@ class _mainpageState extends State<mainpage> {
   @override
   Widget build(BuildContext context) {
     Color getColor() {
+      if (!_isPowerOn) {
+        return const Color.fromRGBO(160, 199, 235, 1);
+      }
       if (number > 300) {
         return Colors.red.shade900;
       } else if (number > 200) {
@@ -57,7 +60,7 @@ class _mainpageState extends State<mainpage> {
       } else if (number > 0) {
         return Colors.green;
       } else {
-        return const Color.fromRGBO(160, 199, 235, 1);
+        return Colors.grey;
       }
     }
 
@@ -136,10 +139,10 @@ class _mainpageState extends State<mainpage> {
                           ],
                         ),
                       ),
-                      const Text(
+                      Text(
                         'PM2.5',
                         style: TextStyle(
-                          color: Color.fromRGBO(160, 199, 235, 1),
+                          color: getColor(),
                           fontSize: 24,
                         ),
                       ),
