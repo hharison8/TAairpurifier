@@ -20,29 +20,26 @@ class _mainpageState extends State<mainpage> {
     _fetchPMValue();
   }
 
-void _fetchPMValue() {
-  FirebaseFirestore.instance
-      .collection('EspData')
-      .doc('DHT11')
-      .snapshots()
-      .listen((DocumentSnapshot documentSnapshot) {
-    if (documentSnapshot.exists) {
-      var data = documentSnapshot.data() as Map<String, dynamic>;
-      if (data != null) {
-        setState(() {
-          number = int.tryParse(data['PM25'] as String? ?? '') ?? 0;
-        });
+  void _fetchPMValue() {
+    FirebaseFirestore.instance
+        .collection('EspData')
+        .doc('DHT11')
+        .snapshots()
+        .listen((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data() as Map<String, dynamic>;
+        if (data != null) {
+          setState(() {
+            number = int.tryParse(data['PM25'] as String? ?? '') ?? 0;
+          });
+        }
+      } else {
+        print('Document does not exist');
       }
-    } else {
-      print('Document does not exist');
-    }
-  }, onError: (error) {
-    print("Failed to fetch PM value: $error");
-  });
-}
-
-
-
+    }, onError: (error) {
+      print("Failed to fetch PM value: $error");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -388,36 +385,61 @@ void _fetchPMValue() {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       setState(() {
                         _isAutoMode = !_isAutoMode;
                       });
                       FirebaseFirestore.instance
                           .collection('EspData')
                           .doc('Sent From Mobile')
-                          .update({'autoMode' : _isAutoMode})
+                          .update({'autoMode': _isAutoMode})
                           .then((_) => print('Auto mode update successfully'))
-                          .catchError((error) => print('Failed to update auto mode : $error'));
+                          .catchError((error) =>
+                              print('Failed to update auto mode : $error'));
                     },
-                  child :Container(
-                    width: 80,
-                    height: 80,
-                    padding: const EdgeInsets.only(left: 20),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      image:
-                          DecorationImage(image: AssetImage('assets/Auto.png')),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.4),
-                          blurRadius: 2.0,
-                          offset: Offset(0.0, 1.5),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 100),
+                      transform: _isAutoMode
+                          ? Matrix4.translationValues(0, 3, 0)
+                          : Matrix4.translationValues(0, 0, 0),
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _isAutoMode
+                              ? Color.fromRGBO(178, 209, 238, 1)
+                              : Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(2, 2),
+                                blurRadius: 5),
+                            BoxShadow(
+                                color: Colors.white,
+                                offset: Offset(-1, -1),
+                                blurRadius: 5),
+                          ],
                         ),
-                      ],
+                        child: Center(
+                          child: Text(
+                            'A',
+                            style: TextStyle(
+                              color: _isAutoMode
+                                  ? Colors.white
+                                  : Color.fromRGBO(178, 209, 238, 1),
+                              fontSize: 55,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              decorationColor: _isAutoMode
+                                  ? Colors.white
+                                  : Color.fromRGBO(178, 209, 238, 1),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -427,55 +449,89 @@ void _fetchPMValue() {
                       FirebaseFirestore.instance
                           .collection('EspData')
                           .doc('Sent From Mobile')
-                          .update({'powerState':_isPowerOn})
+                          .update({'powerState': _isPowerOn})
                           .then(
                               (_) => print('Power state updated successfully'))
                           .catchError((error) =>
                               print('Failed to update power state: $error'));
                     },
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      margin: const EdgeInsets.only(top: 60),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image: AssetImage('assets/Power.png')),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                            blurRadius: 2.0,
-                            offset: Offset(0.0, 1.5),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 100),
+                      transform: _isPowerOn
+                          ? Matrix4.translationValues(0, 3, 0)
+                          : Matrix4.translationValues(0, 0, 0),
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        margin: const EdgeInsets.only(top: 60),
+                        decoration: BoxDecoration(
+                          color: _isPowerOn
+                              ? Color.fromRGBO(178, 209, 238, 1)
+                              : Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(2, 2),
+                                blurRadius: 5),
+                            BoxShadow(
+                                color: Colors.white,
+                                offset: Offset(-1, -1),
+                                blurRadius: 5),
+                          ],
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.power_settings_new_sharp,
+                            size: 80,
+                            color: _isPowerOn
+                                ? Colors.white
+                                : Color.fromRGBO(178, 209, 238, 1),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
                   Container(
                     width: 80,
                     height: 80,
-                    padding: const EdgeInsets.only(right: 20),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      image: DecorationImage(
-                        image: AssetImage('assets/Manual.png'),
-                      ),
+                    decoration: BoxDecoration(
+                      color: _showSlider
+                          ? Color.fromRGBO(178, 209, 238, 1)
+                          : Colors.white,
                       shape: BoxShape.circle,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.4),
-                          blurRadius: 2.0,
-                          offset: Offset(0.0, 1.5),
-                        ),
+                            color: Colors.grey,
+                            offset: Offset(2, 2),
+                            blurRadius: 5),
+                        BoxShadow(
+                            color: Colors.white,
+                            offset: Offset(-1, -1),
+                            blurRadius: 5),
                       ],
                     ),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _showSlider = !_showSlider;
-                        });
-                      },
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _showSlider = !_showSlider;
+                          });
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 100),
+                          transform: _showSlider
+                              ? Matrix4.translationValues(0, 3, 0)
+                              : Matrix4.translationValues(0, 0, 0),
+                          child: Icon(
+                            Icons.touch_app_sharp,
+                            size: 60,
+                            color: _showSlider
+                                ? Colors.white
+                                : Color.fromRGBO(178, 209, 238, 1),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
