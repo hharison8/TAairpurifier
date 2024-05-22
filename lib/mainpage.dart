@@ -41,6 +41,39 @@ class _mainpageState extends State<mainpage> {
     });
   }
 
+  void _toggleAutoMode() {
+  setState(() {
+    _isAutoMode = !_isAutoMode;
+    _showSlider = !_isAutoMode;
+  });
+
+  FirebaseFirestore.instance
+      .collection('EspData')
+      .doc('Sent From Mobile')
+      .update({'autoMode': _isAutoMode})
+      .then((_) => print('Auto mode updated successfully'))
+      .catchError((error) => print('Failed to update auto mode: $error'));
+
+  // Disable manual mode if auto mode is enabled
+  if (_isAutoMode) {
+    _showSlider = false;
+  }
+}
+
+void _toggleManualMode() {
+  setState(() {
+    _showSlider = !_showSlider;
+    _isAutoMode = !_showSlider;
+  });
+
+  FirebaseFirestore.instance
+      .collection('EspData')
+      .doc('Sent From Mobile')
+      .update({'autoMode': _isAutoMode})
+      .then((_) => print('Manual mode updated successfully'))
+      .catchError((error) => print('Failed to update manual mode: $error'));
+}
+
   @override
   Widget build(BuildContext context) {
     Color getColor() {
@@ -390,7 +423,8 @@ class _mainpageState extends State<mainpage> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        _isAutoMode = !_isAutoMode;
+                        _isAutoMode = true;
+                        _showSlider = false;
                       });
                       FirebaseFirestore.instance
                           .collection('EspData')
@@ -518,8 +552,15 @@ class _mainpageState extends State<mainpage> {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
-                            _showSlider = !_showSlider;
+                            _showSlider = true;
+                             _isAutoMode = false;
                           });
+                          FirebaseFirestore.instance
+                          .collection('EspData')
+                          .doc('Sent From Mobile')
+                          .update({'autoMode': false})
+                          .then((_) => print('Manual mode updated successfully'))
+                        .catchError((error) => print('Failed to update manual mode: $error'));
                         },
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 100),
