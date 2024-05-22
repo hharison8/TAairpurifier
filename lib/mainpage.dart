@@ -13,6 +13,7 @@ class _mainpageState extends State<mainpage> {
   bool _isPowerOn = false;
   bool _isAutoMode = false;
   int number = 0;
+  double _sliderValue = 0.0;
 
   @override
   void initState() {
@@ -426,9 +427,10 @@ void _toggleManualMode() {
                           return; // Do nothing if power is off
                         }
                       setState(() {
-                        _isAutoMode = !_isAutoMode;;
+                        _isAutoMode = !_isAutoMode;
                         _showSlider = false;
                       });
+
                       FirebaseFirestore.instance
                           .collection('EspData')
                           .doc('Sent From Mobile')
@@ -553,21 +555,48 @@ void _toggleManualMode() {
                     ),
                     child: Center(
                       child: GestureDetector(
-                        onTap: () {
-                           if (!_isPowerOn) {
-                             return; // Do nothing if power is off
-                            }
-                          setState(() {
-                            _showSlider = !_showSlider;;
-                             _isAutoMode = false;
-                          });
-                          FirebaseFirestore.instance
+                        onTap: () async {
+                        if (!_isPowerOn) {
+                        return; // Do nothing if power is off
+                     }
+
+                    if (!_showSlider) {
+                       // Fetch slider value from Firestore
+                      try {
+                         DocumentSnapshot document = await FirebaseFirestore.instance
                           .collection('EspData')
                           .doc('Sent From Mobile')
-                          .update({'autoMode': false})
-                          .then((_) => print('Manual mode updated successfully'))
-                        .catchError((error) => print('Failed to update manual mode: $error'));
-                        },
+                          .get();
+
+                      var data = document.data(); // Get the data from the document
+                    if (data != null) { // Check if the data is not null
+                      Map<String, dynamic> dataMap = data as Map<String, dynamic>; // Cast to Map<String, dynamic>
+                      double storedSliderValue = dataMap['sliderValue']?.toDouble() ?? 0.0; // Safely access 'sliderValue' with null-aware operator
+
+                    setState(() {
+                   _sliderValue = storedSliderValue;
+                    });
+
+                     } else {
+                      print('No data found in the document'); // Handle the case where data is null
+                    }
+                    } catch (error) {
+                      print('Failed to fetch slider value: $error'); // Handle any errors that occur during the fetch
+                    }
+                  }
+
+                 setState(() {
+                  _showSlider = !_showSlider;
+                  _isAutoMode = false;
+                });
+
+                FirebaseFirestore.instance
+                .collection('EspData')
+                .doc('Sent From Mobile')
+                .update({'autoMode': false})
+                .then((_) => print('Manual mode updated successfully'))
+                .catchError((error) => print('Failed to update manual mode: $error'));
+              },
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 100),
                           transform: _showSlider
@@ -588,30 +617,68 @@ void _toggleManualMode() {
               ),
             ),
             if (_showSlider)
-              const SizedBox(
+              SizedBox(
                 width: 400,
                 height: 50,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [SliderWidget()],
-                ),
+                 children: [
+                  SliderWidget(
+                    initialSliderValue: _sliderValue,
+                    onSliderValueChanged: (double value) {
+                      setState(() {
+                        _sliderValue = value;
+                      });
+
+                      FirebaseFirestore.instance
+                          .collection('EspData')
+                          .doc('Sent From Mobile')
+                          .update({'sliderValue': value.round()})
+                          .then((_) => print('Slider value updated successfully'))
+                          .catchError((error) => print('Failed to update slider value: $error'));
+                    },
+                  ),
+                ],
               ),
-          ],
-        ),
+            ),
+        ],
       ),
+      )
     );
   }
 }
-
 class SliderWidget extends StatefulWidget {
-  const SliderWidget({Key? key}) : super(key: key);
+  final double initialSliderValue;
+  final ValueChanged<double> onSliderValueChanged;
+
+  const SliderWidget({
+    Key? key,
+    required this.initialSliderValue,
+    required this.onSliderValueChanged,
+  }) : super(key: key);
 
   @override
   _SliderWidgetState createState() => _SliderWidgetState();
 }
 
 class _SliderWidgetState extends State<SliderWidget> {
-  double _sliderValue = 0.0;
+  late double _sliderValue;
+  
+
+  @override
+  void initState() {
+    super.initState();
+    _sliderValue = widget.initialSliderValue;
+  }
+
+  @override
+  void didUpdateWidget(covariant SliderWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialSliderValue != oldWidget.initialSliderValue) {
+      _sliderValue = widget.initialSliderValue;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -624,19 +691,11 @@ class _SliderWidgetState extends State<SliderWidget> {
             setState(() {
               _sliderValue = value;
             });
+            widget.onSliderValueChanged(value);
           },
           min: 0.0,
           max: 100.0,
           divisions: 100,
-          onChangeEnd: (double value) {
-            FirebaseFirestore.instance
-                .collection('EspData')
-                .doc('Sent From Mobile')
-                .update({'sliderValue': value.round()})
-                .then((_) => print('Slider value updated successfully'))
-                .catchError(
-                    (error) => print('Failed to update slider value: $error'));
-          },
         ),
       ],
     );
