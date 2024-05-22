@@ -422,8 +422,11 @@ void _toggleManualMode() {
                 children: [
                   GestureDetector(
                     onTap: () {
+                       if (!_isPowerOn) {
+                          return; // Do nothing if power is off
+                        }
                       setState(() {
-                        _isAutoMode = true;
+                        _isAutoMode = !_isAutoMode;;
                         _showSlider = false;
                       });
                       FirebaseFirestore.instance
@@ -551,8 +554,11 @@ void _toggleManualMode() {
                     child: Center(
                       child: GestureDetector(
                         onTap: () {
+                           if (!_isPowerOn) {
+                             return; // Do nothing if power is off
+                            }
                           setState(() {
-                            _showSlider = true;
+                            _showSlider = !_showSlider;;
                              _isAutoMode = false;
                           });
                           FirebaseFirestore.instance
