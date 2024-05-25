@@ -59,6 +59,7 @@ class _mainpageState extends State<mainpage> {
   if (_isAutoMode) {
     _showSlider = false;
   }
+
 }
 
 void _toggleManualMode() {
@@ -74,6 +75,7 @@ void _toggleManualMode() {
       .then((_) => print('Manual mode updated successfully'))
       .catchError((error) => print('Failed to update manual mode: $error'));
 }
+
 
   @override
   Widget build(BuildContext context) {
@@ -438,7 +440,13 @@ void _toggleManualMode() {
                           .then((_) => print('Auto mode update successfully'))
                           .catchError((error) =>
                               print('Failed to update auto mode : $error'));
+
+                        if (!_isPowerOn) {
+                          _isAutoMode = false;
+                          _showSlider = false;
+                        }
                     },
+
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 100),
                       transform: _isAutoMode
@@ -496,7 +504,13 @@ void _toggleManualMode() {
                               (_) => print('Power state updated successfully'))
                           .catchError((error) =>
                               print('Failed to update power state: $error'));
+
+                      if (!_isPowerOn) {
+                         _isAutoMode = false;
+                        _showSlider = false;
+                      }
                     },
+
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 100),
                       transform: _isPowerOn
