@@ -43,39 +43,37 @@ class _mainpageState extends State<mainpage> {
   }
 
   void _toggleAutoMode() {
-  setState(() {
-    _isAutoMode = !_isAutoMode;
-    _showSlider = !_isAutoMode;
-  });
+    setState(() {
+      _isAutoMode = !_isAutoMode;
+      _showSlider = !_isAutoMode;
+    });
 
-  FirebaseFirestore.instance
-      .collection('EspData')
-      .doc('Sent From Mobile')
-      .update({'autoMode': _isAutoMode})
-      .then((_) => print('Auto mode updated successfully'))
-      .catchError((error) => print('Failed to update auto mode: $error'));
+    FirebaseFirestore.instance
+        .collection('EspData')
+        .doc('Sent From Mobile')
+        .update({'autoMode': _isAutoMode})
+        .then((_) => print('Auto mode updated successfully'))
+        .catchError((error) => print('Failed to update auto mode: $error'));
 
-  // Disable manual mode if auto mode is enabled
-  if (_isAutoMode) {
-    _showSlider = false;
+    // Disable manual mode if auto mode is enabled
+    if (_isAutoMode) {
+      _showSlider = false;
+    }
   }
 
-}
+  void _toggleManualMode() {
+    setState(() {
+      _showSlider = !_showSlider;
+      _isAutoMode = !_showSlider;
+    });
 
-void _toggleManualMode() {
-  setState(() {
-    _showSlider = !_showSlider;
-    _isAutoMode = !_showSlider;
-  });
-
-  FirebaseFirestore.instance
-      .collection('EspData')
-      .doc('Sent From Mobile')
-      .update({'autoMode': _isAutoMode})
-      .then((_) => print('Manual mode updated successfully'))
-      .catchError((error) => print('Failed to update manual mode: $error'));
-}
-
+    FirebaseFirestore.instance
+        .collection('EspData')
+        .doc('Sent From Mobile')
+        .update({'autoMode': _isAutoMode})
+        .then((_) => print('Manual mode updated successfully'))
+        .catchError((error) => print('Failed to update manual mode: $error'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,387 +99,446 @@ void _toggleManualMode() {
     }
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: const Color.fromRGBO(255, 255, 255, 255),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          "Home",
-          style: TextStyle(fontFamily: "Raleway"),
+        backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: const Color.fromRGBO(255, 255, 255, 255),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: const Text(
+            "Home",
+            style: TextStyle(fontFamily: "Raleway"),
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: 280,
-              height: 280,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: getColor(),
-                shape: BoxShape.circle,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.4),
-                    blurRadius: 2.0,
-                    offset: Offset(0.0, 1.5),
-                  ),
-                ],
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Indeks Kualitas Udara'),
-                        content: Image.asset('assets/AQI.png'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Tutup'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(top: 64),
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        '$number',
-                        style: TextStyle(
-                          color: getColor(),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 100,
-                          height: 0.95,
-                          shadows: const [
-                            Shadow(
-                              color: Colors.black12,
-                              offset: Offset(-2, -2),
-                              blurRadius: 5,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 280,
+                height: 280,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: getColor(),
+                  shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.4),
+                      blurRadius: 2.0,
+                      offset: Offset(0.0, 1.5),
+                    ),
+                  ],
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Indeks Kualitas Udara'),
+                          content: Image.asset('assets/AQI.png'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Tutup'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
                             ),
                           ],
-                        ),
-                      ),
-                      Text(
-                        'PM2.5',
-                        style: TextStyle(
-                          color: getColor(),
-                          fontSize: 24,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              width: 400,
-              height: 100,
-              margin: const EdgeInsets.only(top: 16, bottom: 16),
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(178, 209, 238, 1),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.4),
-                    blurRadius: 2,
-                    offset: Offset(0.0, 1.5),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 120,
-                    height: 100,
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 64),
                     decoration: const BoxDecoration(
-                      color: Color.fromRGBO(160, 199, 235, 1),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(50),
-                        bottomRight: Radius.circular(50),
-                      ),
+                      color: Color.fromRGBO(255, 255, 255, 1),
+                      shape: BoxShape.circle,
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        StreamBuilder<DocumentSnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('EspData')
-                              .doc('DHT11')
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return const CircularProgressIndicator();
-                            }
-                            if (snapshot.hasData && snapshot.data!.exists) {
-                              // Access the data from the document
-                              Map<String, dynamic>? data = snapshot.data!.data()
-                                  as Map<String, dynamic>?;
-
-                              if (data != null) {
-                                // Access the specific fields
-                                String tempValue = data['Temperature'] ?? '0.0';
-                                double temperature =
-                                    double.tryParse(tempValue) ?? 0;
-
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${temperature.toInt()}°C',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 40,
-                                        shadows: [
-                                          Shadow(
-                                            color: Colors.black12,
-                                            offset: Offset(-2, -2),
-                                            blurRadius: 5,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                // Handle the case when data is null
-                                return const Text('Data is null');
-                              }
-                            } else {
-                              // Handle the case when the document doesn't exist
-                              return const Text('Document does not exist');
-                            }
-                          },
-                        ),
-                        const Text(
-                          'Suhu',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        StreamBuilder<DocumentSnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('EspData')
-                              .doc('DHT11')
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return const CircularProgressIndicator();
-                            }
-                            if (snapshot.hasData && snapshot.data!.exists) {
-                              // Access the data from the document
-                              Map<String, dynamic>? data = snapshot.data!.data()
-                                  as Map<String, dynamic>?;
-
-                              if (data != null) {
-                                // Access the specific fields
-                                String coValue = data['CO'] ?? '0.0';
-                                double CO = double.tryParse(coValue) ?? 0;
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 3),
-                                  child: Text(
-                                    '${CO.toInt()}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 40,
-                                      shadows: [
-                                        Shadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 5,
-                                          offset: const Offset(-2, -2),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                // Handle the case when data is null
-                                return const Text('Data is null');
-                              }
-                            } else {
-                              // Handle the case when the document doesn't exist
-                              return const Text('Document does not exist');
-                            }
-                          },
-                        ),
                         Text(
-                          'CO',
+                          '$number',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            shadows: [
+                            color: getColor(),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 100,
+                            height: 0.95,
+                            shadows: const [
                               Shadow(
-                                color: Colors.black.withOpacity(0.2),
+                                color: Colors.black12,
+                                offset: Offset(-2, -2),
                                 blurRadius: 5,
-                                offset: const Offset(-2, -2),
                               ),
                             ],
                           ),
                         ),
+                        Text(
+                          'PM2.5',
+                          style: TextStyle(
+                            color: getColor(),
+                            fontSize: 24,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  Container(
-                    width: 120,
-                    height: 100,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(160, 199, 235, 1),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        bottomLeft: Radius.circular(50),
+                ),
+              ),
+              Container(
+                width: 400,
+                height: 100,
+                margin: const EdgeInsets.only(top: 16, bottom: 16),
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(178, 209, 238, 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.4),
+                      blurRadius: 2,
+                      offset: Offset(0.0, 1.5),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 100,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(160, 199, 235, 1),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(50),
+                          bottomRight: Radius.circular(50),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('EspData')
+                                .doc('DHT11')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const CircularProgressIndicator();
+                              }
+                              if (snapshot.hasData && snapshot.data!.exists) {
+                                // Access the data from the document
+                                Map<String, dynamic>? data = snapshot.data!
+                                    .data() as Map<String, dynamic>?;
+
+                                if (data != null) {
+                                  // Access the specific fields
+                                  String tempValue =
+                                      data['Temperature'] ?? '0.0';
+                                  double temperature =
+                                      double.tryParse(tempValue) ?? 0;
+
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '${temperature.toInt()}°C',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 40,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black12,
+                                              offset: Offset(-2, -2),
+                                              blurRadius: 5,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  // Handle the case when data is null
+                                  return const Text('Data is null');
+                                }
+                              } else {
+                                // Handle the case when the document doesn't exist
+                                return const Text('Document does not exist');
+                              }
+                            },
+                          ),
+                          const Text(
+                            'Suhu',
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        StreamBuilder<DocumentSnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('EspData')
-                              .doc('DHT11')
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return const CircularProgressIndicator();
-                            }
-                            if (snapshot.hasData && snapshot.data!.exists) {
-                              // Access the data from the document
-                              Map<String, dynamic>? data = snapshot.data!.data()
-                                  as Map<String, dynamic>?;
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('EspData')
+                                .doc('DHT11')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const CircularProgressIndicator();
+                              }
+                              if (snapshot.hasData && snapshot.data!.exists) {
+                                // Access the data from the document
+                                Map<String, dynamic>? data = snapshot.data!
+                                    .data() as Map<String, dynamic>?;
 
-                              if (data != null) {
-                                // Access the specific field for humidity
-                                String humidityValue = data['Humidity'] ??
-                                    '0'; // Assuming 'Humidity' is the field name in Firestore
-                                double humidity =
-                                    double.tryParse(humidityValue) ?? 0;
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${humidity.toInt()}%',
-                                      style: const TextStyle(
+                                if (data != null) {
+                                  // Access the specific fields
+                                  String coValue = data['CO'] ?? '0.0';
+                                  double CO = double.tryParse(coValue) ?? 0;
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 3),
+                                    child: Text(
+                                      '${CO.toStringAsFixed(1)}',
+                                      style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 40,
                                         shadows: [
                                           Shadow(
-                                            color: Colors.black12,
-                                            offset: Offset(-2, -2),
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                             blurRadius: 5,
+                                            offset: const Offset(-2, -2),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    const Text(
-                                      'Kelembaban',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15),
-                                    ),
-                                  ],
-                                );
+                                  );
+                                } else {
+                                  // Handle the case when data is null
+                                  return const Text('Data is null');
+                                }
                               } else {
-                                // Handle the case when data is null
-                                return const Text('Data is null');
+                                // Handle the case when the document doesn't exist
+                                return const Text('Document does not exist');
                               }
-                            } else {
-                              // Handle the case when the document doesn't exist
-                              return const Text('Document does not exist');
-                            }
-                          },
-                        ),
-                      ],
+                            },
+                          ),
+                          Text(
+                            'CO',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 5,
+                                  offset: const Offset(-2, -2),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      width: 120,
+                      height: 100,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(160, 199, 235, 1),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          bottomLeft: Radius.circular(50),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('EspData')
+                                .doc('DHT11')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const CircularProgressIndicator();
+                              }
+                              if (snapshot.hasData && snapshot.data!.exists) {
+                                // Access the data from the document
+                                Map<String, dynamic>? data = snapshot.data!
+                                    .data() as Map<String, dynamic>?;
+
+                                if (data != null) {
+                                  // Access the specific field for humidity
+                                  String humidityValue = data['Humidity'] ??
+                                      '0'; // Assuming 'Humidity' is the field name in Firestore
+                                  double humidity =
+                                      double.tryParse(humidityValue) ?? 0;
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '${humidity.toInt()}%',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 40,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black12,
+                                              offset: Offset(-2, -2),
+                                              blurRadius: 5,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Text(
+                                        'Kelembaban',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  // Handle the case when data is null
+                                  return const Text('Data is null');
+                                }
+                              } else {
+                                // Handle the case when the document doesn't exist
+                                return const Text('Document does not exist');
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              width: 400,
-              height: 156,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                       if (!_isPowerOn) {
+              SizedBox(
+                width: 400,
+                height: 156,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (!_isPowerOn) {
                           return; // Do nothing if power is off
                         }
-                      setState(() {
-                        _isAutoMode = !_isAutoMode;
-                        _showSlider = false;
-                      });
+                        setState(() {
+                          _isAutoMode = !_isAutoMode;
+                          _showSlider = false;
+                        });
 
-                      FirebaseFirestore.instance
-                          .collection('EspData')
-                          .doc('Sent From Mobile')
-                          .update({'autoMode': _isAutoMode})
-                          .then((_) => print('Auto mode update successfully'))
-                          .catchError((error) =>
-                              print('Failed to update auto mode : $error'));
+                        FirebaseFirestore.instance
+                            .collection('EspData')
+                            .doc('Sent From Mobile')
+                            .update({'autoMode': _isAutoMode})
+                            .then((_) => print('Auto mode update successfully'))
+                            .catchError((error) =>
+                                print('Failed to update auto mode : $error'));
 
                         if (!_isPowerOn) {
                           _isAutoMode = false;
                           _showSlider = false;
                         }
-                    },
-
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 100),
-                      transform: _isAutoMode
-                          ? Matrix4.translationValues(0, 3, 0)
-                          : Matrix4.translationValues(0, 0, 0),
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _isAutoMode
-                              ? Color.fromRGBO(178, 209, 238, 1)
-                              : Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(2, 2),
-                                blurRadius: 5),
-                            BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(-1, -1),
-                                blurRadius: 5),
-                          ],
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 100),
+                        transform: _isAutoMode
+                            ? Matrix4.translationValues(0, 3, 0)
+                            : Matrix4.translationValues(0, 0, 0),
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _isAutoMode
+                                ? Color.fromRGBO(178, 209, 238, 1)
+                                : Colors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(2, 2),
+                                  blurRadius: 5),
+                              BoxShadow(
+                                  color: Colors.white,
+                                  offset: Offset(-1, -1),
+                                  blurRadius: 5),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              'A',
+                              style: TextStyle(
+                                color: _isAutoMode
+                                    ? Colors.white
+                                    : Color.fromRGBO(178, 209, 238, 1),
+                                fontSize: 55,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                decorationColor: _isAutoMode
+                                    ? Colors.white
+                                    : Color.fromRGBO(178, 209, 238, 1),
+                              ),
+                            ),
+                          ),
                         ),
-                        child: Center(
-                          child: Text(
-                            'A',
-                            style: TextStyle(
-                              color: _isAutoMode
-                                  ? Colors.white
-                                  : Color.fromRGBO(178, 209, 238, 1),
-                              fontSize: 55,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                              decorationColor: _isAutoMode
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isPowerOn = !_isPowerOn;
+                        });
+
+                        FirebaseFirestore.instance
+                            .collection('EspData')
+                            .doc('Sent From Mobile')
+                            .update({'powerState': _isPowerOn})
+                            .then((_) =>
+                                print('Power state updated successfully'))
+                            .catchError((error) =>
+                                print('Failed to update power state: $error'));
+
+                        if (!_isPowerOn) {
+                          _isAutoMode = false;
+                          _showSlider = false;
+                        }
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 100),
+                        transform: _isPowerOn
+                            ? Matrix4.translationValues(0, 3, 0)
+                            : Matrix4.translationValues(0, 0, 0),
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          margin: const EdgeInsets.only(top: 60),
+                          decoration: BoxDecoration(
+                            color: _isPowerOn
+                                ? Color.fromRGBO(178, 209, 238, 1)
+                                : Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(2, 2),
+                                  blurRadius: 5),
+                              BoxShadow(
+                                  color: Colors.white,
+                                  offset: Offset(-1, -1),
+                                  blurRadius: 5),
+                            ],
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.power_settings_new_sharp,
+                              size: 80,
+                              color: _isPowerOn
                                   ? Colors.white
                                   : Color.fromRGBO(178, 209, 238, 1),
                             ),
@@ -489,178 +546,132 @@ void _toggleManualMode() {
                         ),
                       ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isPowerOn = !_isPowerOn;
-                      });
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: _showSlider
+                            ? Color.fromRGBO(178, 209, 238, 1)
+                            : Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(2, 2),
+                              blurRadius: 5),
+                          BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(-1, -1),
+                              blurRadius: 5),
+                        ],
+                      ),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (!_isPowerOn) {
+                              return; // Do nothing if power is off
+                            }
 
-                      FirebaseFirestore.instance
-                          .collection('EspData')
-                          .doc('Sent From Mobile')
-                          .update({'powerState': _isPowerOn})
-                          .then(
-                              (_) => print('Power state updated successfully'))
-                          .catchError((error) =>
-                              print('Failed to update power state: $error'));
+                            if (!_showSlider) {
+                              // Fetch slider value from Firestore
+                              try {
+                                DocumentSnapshot document =
+                                    await FirebaseFirestore.instance
+                                        .collection('EspData')
+                                        .doc('Sent From Mobile')
+                                        .get();
 
-                      if (!_isPowerOn) {
-                         _isAutoMode = false;
-                        _showSlider = false;
-                      }
-                    },
+                                var data = document
+                                    .data(); // Get the data from the document
+                                if (data != null) {
+                                  // Check if the data is not null
+                                  Map<String, dynamic> dataMap = data as Map<
+                                      String,
+                                      dynamic>; // Cast to Map<String, dynamic>
+                                  double storedSliderValue = dataMap[
+                                              'sliderValue']
+                                          ?.toDouble() ??
+                                      0.0; // Safely access 'sliderValue' with null-aware operator
 
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 100),
-                      transform: _isPowerOn
-                          ? Matrix4.translationValues(0, 3, 0)
-                          : Matrix4.translationValues(0, 0, 0),
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        margin: const EdgeInsets.only(top: 60),
-                        decoration: BoxDecoration(
-                          color: _isPowerOn
-                              ? Color.fromRGBO(178, 209, 238, 1)
-                              : Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: const [
-                            BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(2, 2),
-                                blurRadius: 5),
-                            BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(-1, -1),
-                                blurRadius: 5),
-                          ],
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.power_settings_new_sharp,
-                            size: 80,
-                            color: _isPowerOn
-                                ? Colors.white
-                                : Color.fromRGBO(178, 209, 238, 1),
+                                  setState(() {
+                                    _sliderValue = storedSliderValue;
+                                  });
+                                } else {
+                                  print(
+                                      'No data found in the document'); // Handle the case where data is null
+                                }
+                              } catch (error) {
+                                print(
+                                    'Failed to fetch slider value: $error'); // Handle any errors that occur during the fetch
+                              }
+                            }
+
+                            setState(() {
+                              _showSlider = !_showSlider;
+                              _isAutoMode = false;
+                            });
+
+                            FirebaseFirestore.instance
+                                .collection('EspData')
+                                .doc('Sent From Mobile')
+                                .update({'autoMode': false})
+                                .then((_) =>
+                                    print('Manual mode updated successfully'))
+                                .catchError((error) => print(
+                                    'Failed to update manual mode: $error'));
+                          },
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 100),
+                            transform: _showSlider
+                                ? Matrix4.translationValues(0, 3, 0)
+                                : Matrix4.translationValues(0, 0, 0),
+                            child: Icon(
+                              Icons.touch_app_sharp,
+                              size: 60,
+                              color: _showSlider
+                                  ? Colors.white
+                                  : Color.fromRGBO(178, 209, 238, 1),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: _showSlider
-                          ? Color.fromRGBO(178, 209, 238, 1)
-                          : Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(2, 2),
-                            blurRadius: 5),
-                        BoxShadow(
-                            color: Colors.white,
-                            offset: Offset(-1, -1),
-                            blurRadius: 5),
-                      ],
-                    ),
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                        if (!_isPowerOn) {
-                        return; // Do nothing if power is off
-                     }
+                  ],
+                ),
+              ),
+              if (_showSlider)
+                SizedBox(
+                  width: 400,
+                  height: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SliderWidget(
+                        initialSliderValue: _sliderValue,
+                        onSliderValueChanged: (double value) {
+                          setState(() {
+                            _sliderValue = value;
+                          });
 
-                    if (!_showSlider) {
-                       // Fetch slider value from Firestore
-                      try {
-                         DocumentSnapshot document = await FirebaseFirestore.instance
-                          .collection('EspData')
-                          .doc('Sent From Mobile')
-                          .get();
-
-                      var data = document.data(); // Get the data from the document
-                    if (data != null) { // Check if the data is not null
-                      Map<String, dynamic> dataMap = data as Map<String, dynamic>; // Cast to Map<String, dynamic>
-                      double storedSliderValue = dataMap['sliderValue']?.toDouble() ?? 0.0; // Safely access 'sliderValue' with null-aware operator
-
-                    setState(() {
-                   _sliderValue = storedSliderValue;
-                    });
-
-                     } else {
-                      print('No data found in the document'); // Handle the case where data is null
-                    }
-                    } catch (error) {
-                      print('Failed to fetch slider value: $error'); // Handle any errors that occur during the fetch
-                    }
-                  }
-
-                 setState(() {
-                  _showSlider = !_showSlider;
-                  _isAutoMode = false;
-                });
-
-                FirebaseFirestore.instance
-                .collection('EspData')
-                .doc('Sent From Mobile')
-                .update({'autoMode': false})
-                .then((_) => print('Manual mode updated successfully'))
-                .catchError((error) => print('Failed to update manual mode: $error'));
-              },
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 100),
-                          transform: _showSlider
-                              ? Matrix4.translationValues(0, 3, 0)
-                              : Matrix4.translationValues(0, 0, 0),
-                          child: Icon(
-                            Icons.touch_app_sharp,
-                            size: 60,
-                            color: _showSlider
-                                ? Colors.white
-                                : Color.fromRGBO(178, 209, 238, 1),
-                          ),
-                        ),
+                          FirebaseFirestore.instance
+                              .collection('EspData')
+                              .doc('Sent From Mobile')
+                              .update({'sliderValue': value.round()})
+                              .then((_) =>
+                                  print('Slider value updated successfully'))
+                              .catchError((error) => print(
+                                  'Failed to update slider value: $error'));
+                        },
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            if (_showSlider)
-              SizedBox(
-                width: 400,
-                height: 50,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                  SliderWidget(
-                    initialSliderValue: _sliderValue,
-                    onSliderValueChanged: (double value) {
-                      setState(() {
-                        _sliderValue = value;
-                      });
-
-                      FirebaseFirestore.instance
-                          .collection('EspData')
-                          .doc('Sent From Mobile')
-                          .update({'sliderValue': value.round()})
-                          .then((_) => print('Slider value updated successfully'))
-                          .catchError((error) => print('Failed to update slider value: $error'));
-                    },
-                  ),
-                ],
-              ),
-            ),
-        ],
-      ),
-      )
-    );
+                ),
+            ],
+          ),
+        ));
   }
 }
+
 class SliderWidget extends StatefulWidget {
   final double initialSliderValue;
   final ValueChanged<double> onSliderValueChanged;
@@ -677,7 +688,6 @@ class SliderWidget extends StatefulWidget {
 
 class _SliderWidgetState extends State<SliderWidget> {
   late double _sliderValue;
-  
 
   @override
   void initState() {
@@ -692,7 +702,6 @@ class _SliderWidgetState extends State<SliderWidget> {
       _sliderValue = widget.initialSliderValue;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
