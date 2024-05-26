@@ -83,13 +83,13 @@ class _mainpageState extends State<mainpage> {
       }
       if (number > 300) {
         return Colors.red.shade900;
-      } else if (number > 200) {
+      } else if (number > 201) {
         return Colors.purple;
-      } else if (number > 150) {
+      } else if (number > 151) {
         return Colors.red;
-      } else if (number > 100) {
+      } else if (number > 101) {
         return Colors.orange;
-      } else if (number > 50) {
+      } else if (number > 51) {
         return Colors.yellow;
       } else if (number > 0) {
         return Colors.green;
