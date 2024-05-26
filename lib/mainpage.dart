@@ -441,10 +441,6 @@ class _mainpageState extends State<mainpage> {
                             .catchError((error) =>
                                 print('Failed to update auto mode : $error'));
 
-                        if (!_isPowerOn) {
-                          _isAutoMode = false;
-                          _showSlider = false;
-                        }
                       },
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 100),
@@ -490,25 +486,50 @@ class _mainpageState extends State<mainpage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                      setState(() {
+                      _isPowerOn = !_isPowerOn;
+                      });
+
+                      // Update the power state in Firestore
+                      FirebaseFirestore.instance
+                        .collection('EspData')
+                        .doc('Sent From Mobile')
+                        .update({'powerState': _isPowerOn})
+                        .then((_) => print('Power state updated successfully'))
+                         .catchError((error) => print('Failed to update power state: $error'));
+
+                      // If power is turned on, fetch AutoMode value from Firestore
+                      if (_isPowerOn) {
+                        try {
+                          DocumentSnapshot document = await FirebaseFirestore.instance
+                          .collection('EspData')
+                          .doc('Sent From Mobile')
+                          .get();
+
+                        var data = document.data(); // Get the data from the document
+                        if (data != null) { // Check if the data is not null
+                        Map<String, dynamic> dataMap = data as Map<String, dynamic>; // Cast to Map<String, dynamic>
+                        bool autoMode = dataMap['autoMode'] ?? false; // Safely access 'autoMode' with null-aware operator
+
                         setState(() {
-                          _isPowerOn = !_isPowerOn;
-                        });
-
-                        FirebaseFirestore.instance
-                            .collection('EspData')
-                            .doc('Sent From Mobile')
-                            .update({'powerState': _isPowerOn})
-                            .then((_) =>
-                                print('Power state updated successfully'))
-                            .catchError((error) =>
-                                print('Failed to update power state: $error'));
-
-                        if (!_isPowerOn) {
-                          _isAutoMode = false;
-                          _showSlider = false;
-                        }
-                      },
+                        _isAutoMode = autoMode;
+                        _showSlider = !autoMode; // If autoMode is true, showSlider should be false, and vice versa
+                      });
+                      } else {
+                        print('No data found in the document'); // Handle the case where data is null
+                      }
+                      } catch (error) {
+                        print('Failed to fetch AutoMode value: $error'); // Handle any errors that occur during the fetch
+                      }
+                      } else {
+                        // Reset button state when power is turned off
+                        setState(() {
+                        _isAutoMode = false;
+                        _showSlider = false;
+                      });
+                    }
+                  },
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 100),
                         transform: _isPowerOn
