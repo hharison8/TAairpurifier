@@ -136,7 +136,7 @@ class _mainpageState extends State<mainpage> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text('Indeks Kualitas Udara'),
-                          content: Image.asset('assets/AQI.png'),
+                          content: Image.asset('assets/AQI Index.png'),
                           actions: <Widget>[
                             TextButton(
                               child: const Text('Tutup'),
@@ -440,7 +440,6 @@ class _mainpageState extends State<mainpage> {
                             .then((_) => print('Auto mode update successfully'))
                             .catchError((error) =>
                                 print('Failed to update auto mode : $error'));
-
                       },
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 100),
@@ -487,49 +486,59 @@ class _mainpageState extends State<mainpage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                      setState(() {
-                      _isPowerOn = !_isPowerOn;
-                      });
-
-                      // Update the power state in Firestore
-                      FirebaseFirestore.instance
-                        .collection('EspData')
-                        .doc('Sent From Mobile')
-                        .update({'powerState': _isPowerOn})
-                        .then((_) => print('Power state updated successfully'))
-                         .catchError((error) => print('Failed to update power state: $error'));
-
-                      // If power is turned on, fetch AutoMode value from Firestore
-                      if (_isPowerOn) {
-                        try {
-                          DocumentSnapshot document = await FirebaseFirestore.instance
-                          .collection('EspData')
-                          .doc('Sent From Mobile')
-                          .get();
-
-                        var data = document.data(); // Get the data from the document
-                        if (data != null) { // Check if the data is not null
-                        Map<String, dynamic> dataMap = data as Map<String, dynamic>; // Cast to Map<String, dynamic>
-                        bool autoMode = dataMap['autoMode'] ?? false; // Safely access 'autoMode' with null-aware operator
-
                         setState(() {
-                        _isAutoMode = autoMode;
-                        _showSlider = !autoMode; // If autoMode is true, showSlider should be false, and vice versa
-                      });
-                      } else {
-                        print('No data found in the document'); // Handle the case where data is null
-                      }
-                      } catch (error) {
-                        print('Failed to fetch AutoMode value: $error'); // Handle any errors that occur during the fetch
-                      }
-                      } else {
-                        // Reset button state when power is turned off
-                        setState(() {
-                        _isAutoMode = false;
-                        _showSlider = false;
-                      });
-                    }
-                  },
+                          _isPowerOn = !_isPowerOn;
+                        });
+
+                        // Update the power state in Firestore
+                        FirebaseFirestore.instance
+                            .collection('EspData')
+                            .doc('Sent From Mobile')
+                            .update({'powerState': _isPowerOn})
+                            .then((_) =>
+                                print('Power state updated successfully'))
+                            .catchError((error) =>
+                                print('Failed to update power state: $error'));
+
+                        // If power is turned on, fetch AutoMode value from Firestore
+                        if (_isPowerOn) {
+                          try {
+                            DocumentSnapshot document = await FirebaseFirestore
+                                .instance
+                                .collection('EspData')
+                                .doc('Sent From Mobile')
+                                .get();
+
+                            var data = document
+                                .data(); // Get the data from the document
+                            if (data != null) {
+                              // Check if the data is not null
+                              Map<String, dynamic> dataMap = data as Map<String,
+                                  dynamic>; // Cast to Map<String, dynamic>
+                              bool autoMode = dataMap['autoMode'] ??
+                                  false; // Safely access 'autoMode' with null-aware operator
+
+                              setState(() {
+                                _isAutoMode = autoMode;
+                                _showSlider =
+                                    !autoMode; // If autoMode is true, showSlider should be false, and vice versa
+                              });
+                            } else {
+                              print(
+                                  'No data found in the document'); // Handle the case where data is null
+                            }
+                          } catch (error) {
+                            print(
+                                'Failed to fetch AutoMode value: $error'); // Handle any errors that occur during the fetch
+                          }
+                        } else {
+                          // Reset button state when power is turned off
+                          setState(() {
+                            _isAutoMode = false;
+                            _showSlider = false;
+                          });
+                        }
+                      },
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 100),
                         transform: _isPowerOn

@@ -79,6 +79,7 @@ flutter:
   - assets/(bg)Register.png
   - assets/(bg)SplashScreen.png
   - assets/AQI.png
+  - assets/AQI Index.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
