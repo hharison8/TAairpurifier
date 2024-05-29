@@ -42,8 +42,6 @@ class _mainpageState extends State<mainpage> {
     });
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     Color getColor() {
@@ -389,8 +387,8 @@ class _mainpageState extends State<mainpage> {
                 width: 400,
                 height: 156,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -399,16 +397,17 @@ class _mainpageState extends State<mainpage> {
                         }
                         setState(() {
                           _isAutoMode = !_isAutoMode;
-                          _showSlider = false;
+                          _showSlider =
+                              !_isAutoMode; // Toggle slider visibility
                         });
 
                         FirebaseFirestore.instance
                             .collection('EspData')
                             .doc('Sent From Mobile')
                             .update({'autoMode': _isAutoMode})
-                            .then((_) => print('Auto mode update successfully'))
+                            .then((_) => print('Mode updated successfully'))
                             .catchError((error) =>
-                                print('Failed to update auto mode : $error'));
+                                print('Failed to update mode: $error'));
                       },
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 100),
@@ -416,8 +415,8 @@ class _mainpageState extends State<mainpage> {
                             ? Matrix4.translationValues(0, 3, 0)
                             : Matrix4.translationValues(0, 0, 0),
                         child: Container(
-                          width: 80,
-                          height: 80,
+                          width: 100,
+                          height: 100,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _isAutoMode
@@ -435,20 +434,22 @@ class _mainpageState extends State<mainpage> {
                             ],
                           ),
                           child: Center(
-                            child: Text(
-                              'A',
-                              style: TextStyle(
-                                color: _isAutoMode
-                                    ? Colors.white
-                                    : Color.fromRGBO(178, 209, 238, 1),
-                                fontSize: 55,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                decorationColor: _isAutoMode
-                                    ? Colors.white
-                                    : Color.fromRGBO(178, 209, 238, 1),
-                              ),
-                            ),
+                            child: _isAutoMode
+                                ? Text(
+                                    'A',
+                                    style: TextStyle(
+                                      fontSize: 60,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.white,
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.touch_app_sharp,
+                                    size: 60,
+                                    color: Color.fromRGBO(178, 209, 238, 1),
+                                  ),
                           ),
                         ),
                       ),
@@ -516,7 +517,7 @@ class _mainpageState extends State<mainpage> {
                         child: Container(
                           width: 100,
                           height: 100,
-                          margin: const EdgeInsets.only(top: 60),
+                          //margin: const EdgeInsets.only(top: 60),
                           decoration: BoxDecoration(
                             color: _isPowerOn
                                 ? Color.fromRGBO(178, 209, 238, 1)
@@ -538,96 +539,6 @@ class _mainpageState extends State<mainpage> {
                               Icons.power_settings_new_sharp,
                               size: 80,
                               color: _isPowerOn
-                                  ? Colors.white
-                                  : Color.fromRGBO(178, 209, 238, 1),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: _showSlider
-                            ? Color.fromRGBO(178, 209, 238, 1)
-                            : Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(2, 2),
-                              blurRadius: 5),
-                          BoxShadow(
-                              color: Colors.white,
-                              offset: Offset(-1, -1),
-                              blurRadius: 5),
-                        ],
-                      ),
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (!_isPowerOn) {
-                              return; // Do nothing if power is off
-                            }
-
-                            if (!_showSlider) {
-                              // Fetch slider value from Firestore
-                              try {
-                                DocumentSnapshot document =
-                                    await FirebaseFirestore.instance
-                                        .collection('EspData')
-                                        .doc('Sent From Mobile')
-                                        .get();
-
-                                var data = document
-                                    .data(); // Get the data from the document
-                                if (data != null) {
-                                  // Check if the data is not null
-                                  Map<String, dynamic> dataMap = data as Map<
-                                      String,
-                                      dynamic>; // Cast to Map<String, dynamic>
-                                  double storedSliderValue = dataMap[
-                                              'sliderValue']
-                                          ?.toDouble() ??
-                                      0.0; // Safely access 'sliderValue' with null-aware operator
-
-                                  setState(() {
-                                    _sliderValue = storedSliderValue;
-                                  });
-                                } else {
-                                  print(
-                                      'No data found in the document'); // Handle the case where data is null
-                                }
-                              } catch (error) {
-                                print(
-                                    'Failed to fetch slider value: $error'); // Handle any errors that occur during the fetch
-                              }
-                            }
-
-                            setState(() {
-                              _showSlider = !_showSlider;
-                              _isAutoMode = false;
-                            });
-
-                            FirebaseFirestore.instance
-                                .collection('EspData')
-                                .doc('Sent From Mobile')
-                                .update({'autoMode': false})
-                                .then((_) =>
-                                    print('Manual mode updated successfully'))
-                                .catchError((error) => print(
-                                    'Failed to update manual mode: $error'));
-                          },
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 100),
-                            transform: _showSlider
-                                ? Matrix4.translationValues(0, 3, 0)
-                                : Matrix4.translationValues(0, 0, 0),
-                            child: Icon(
-                              Icons.touch_app_sharp,
-                              size: 60,
-                              color: _showSlider
                                   ? Colors.white
                                   : Color.fromRGBO(178, 209, 238, 1),
                             ),
