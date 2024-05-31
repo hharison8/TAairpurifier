@@ -501,12 +501,6 @@ class _mainpageState extends State<mainpage> {
                             print(
                                 'Failed to fetch AutoMode value: $error'); // Handle any errors that occur during the fetch
                           }
-                        } else {
-                          // Reset button state when power is turned off
-                          setState(() {
-                            _isAutoMode = false;
-                            _showSlider = false;
-                          });
                         }
                       },
                       child: AnimatedContainer(
@@ -556,6 +550,7 @@ class _mainpageState extends State<mainpage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      if(_isPowerOn)
                       SliderWidget(
                         initialSliderValue: _sliderValue,
                         onSliderValueChanged: (double value) {
