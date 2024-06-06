@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/auth.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -8,6 +10,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final FirebaseAuthServices _auth = FirebaseAuthServices();
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,6 +64,7 @@ class _LoginState extends State<Login> {
                       left: 35),
                   child: Column(children: [
                     TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         fillColor: Colors.grey.shade300,
                         filled: true,
@@ -63,6 +78,7 @@ class _LoginState extends State<Login> {
                       height: 10,
                     ),
                     TextField(
+                      controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         fillColor: Colors.grey.shade300,
@@ -112,9 +128,7 @@ class _LoginState extends State<Login> {
                             backgroundColor: const Color(0xff4c505b),
                             child: IconButton(
                               color: Colors.white,
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/bottomnav');
-                              },
+                              onPressed: _signIn,
                               icon: const Icon(Icons.arrow_forward),
                             ),
                           ),
@@ -150,5 +164,19 @@ class _LoginState extends State<Login> {
         ]),
       ),
     );
+  }
+
+  void _signIn() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user = await _auth.signInWithEmailAndPassword(email, password);
+
+    if (user != null) {
+      print("User is succesfully Sign In");
+      Navigator.pushNamed(context, "/bottomnav");
+    } else {
+      print("Some error happend");
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Setting extends StatefulWidget {
   const Setting({Key? key}) : super(key: key);
@@ -25,7 +26,8 @@ class _SettingState extends State<Setting> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/');
+            FirebaseAuth.instance.signOut();
+            Navigator.pushNamed(context, "/");
           },
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 48),

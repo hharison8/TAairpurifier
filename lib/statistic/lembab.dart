@@ -1,58 +1,145 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/statistic/linechart/lembab1.dart';
-import 'package:flutter_application_1/statistic/linechart/lembab2.dart';
-import 'package:flutter_application_1/statistic/linechart/lembab3.dart';
 
-class LembabPage extends StatefulWidget {
-  const LembabPage({super.key});
+class Lembab extends StatefulWidget {
+  const Lembab({Key? key}) : super(key: key);
 
   @override
-  State<LembabPage> createState() => _LembabPageState();
+  _LembabState createState() => _LembabState();
 }
 
-class _LembabPageState extends State<LembabPage> {
+class _LembabState extends State<Lembab> {
   @override
-  Widget build(BuildContext context) => DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(width: 1),
-                    borderRadius: BorderRadius.circular(80),
-                  ),
-                  child: TabBar(
-                    tabs: const [
-                      Tab(text: '1 Jam'),
-                      Tab(text: '12 Jam'),
-                      Tab(text: '24 jam'),
-                    ],
-                    indicator: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(width: 1),
-                      borderRadius: BorderRadius.circular(80),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
+        body: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            margin: const EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 20, top: 20),
+            height: 400,
+            width: 400,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50)), // Border container
+            ),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: LineChart(
+                LineChartData(
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: const [
+                        FlSpot(0, 4),
+                        FlSpot(10, 48),
+                        FlSpot(20, 21),
+                        FlSpot(30, 34),
+                        FlSpot(40, 24),
+                        FlSpot(50, 50),
+                        FlSpot(60, 31),
+                      ],
+                      isCurved: true,
+                      dotData: const FlDotData(show: true),
+                      color: Colors.blue,
+                      barWidth: 5,
+                      belowBarData: BarAreaData(
+                        show: true,
+                        color: Colors.blue.withOpacity(0.3),
+                      ),
                     ),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    onTap: (index) {
-                      setState(() {});
-                    },
+                  ],
+                  minX: 0,
+                  maxX: 60,
+                  minY: 0,
+                  maxY: 50,
+                  borderData: FlBorderData(
+                    show: true,
+                    border: const Border(
+                      bottom: BorderSide(color: Colors.black),
+                      right: BorderSide(color: Colors.black),
+                      top: BorderSide(color: Colors.transparent),
+                      left: BorderSide(color: Colors.transparent),
+                    ),
+                  ),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: AxisTitles(
+                      /*axisNameWidget: const Text('Menit'),*/
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 30,
+                        getTitlesWidget: (value, meta) {
+                          String text = '';
+                          switch (value.toInt()) {
+                            case 0:
+                              text = '0';
+                              break;
+                            case 10:
+                              text = '10';
+                              break;
+                            case 20:
+                              text = '20';
+                              break;
+                            case 30:
+                              text = '30';
+                              break;
+                            case 40:
+                              text = '40';
+                              break;
+                            case 50:
+                              text = '50';
+                              break;
+                            case 60:
+                              text = '';
+                              break;
+                          }
+                          return Text(text);
+                        },
+                      ),
+                    ),
+                    rightTitles: AxisTitles(
+                      /*axisNameWidget: const Text('Value'),*/
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 30,
+                        getTitlesWidget: (value, meta) {
+                          String text = '';
+                          switch (value.toInt()) {
+                            case 10:
+                              text = '10';
+                              break;
+                            case 20:
+                              text = '20';
+                              break;
+                            case 30:
+                              text = '30';
+                              break;
+                            case 40:
+                              text = '40';
+                              break;
+                            case 50:
+                              text = '50';
+                              break;
+                          }
+                          return Text(text);
+                        },
+                      ),
+                    ),
+                    leftTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                      ),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                      ),
+                    ),
                   ),
                 ),
-                const Expanded(
-                  child: TabBarView(
-                    children: [
-                      Lembab1(),
-                      Lembab2(),
-                      Lembab3(),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

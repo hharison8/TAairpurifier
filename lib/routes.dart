@@ -25,13 +25,13 @@ class RouteGenerator {
       case '/statistic':
         return MaterialPageRoute(builder: (_) => const Statistic());
       case '/pm25':
-        return MaterialPageRoute(builder: (_) => const PMPage());
+        return MaterialPageRoute(builder: (_) => const PM25());
       case '/co':
-        return MaterialPageRoute(builder: (_) => const COPage());
+        return MaterialPageRoute(builder: (_) => const CO());
       case '/suhu':
-        return MaterialPageRoute(builder: (_) => const SuhuPage());
+        return MaterialPageRoute(builder: (_) => const Suhu());
       case '/kelembaban':
-        return MaterialPageRoute(builder: (_) => const LembabPage());
+        return MaterialPageRoute(builder: (_) => const Lembab());
       case '/setting':
         return MaterialPageRoute(builder: (_) => const Setting());
       case '/bottomnav':

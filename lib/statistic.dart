@@ -32,10 +32,10 @@ class _StatisticState extends State<Statistic> {
           ),
           body: const TabBarView(
             children: [
-              PMPage(),
-              COPage(),
-              SuhuPage(),
-              LembabPage(),
+              PM25(),
+              CO(),
+              Suhu(),
+              Lembab(),
             ],
           ),
         ),
