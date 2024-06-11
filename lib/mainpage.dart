@@ -546,28 +546,28 @@ class _mainpageState extends State<mainpage> {
               if (_showSlider)
                 SizedBox(
                   width: 400,
-                  height: 50,
+                  height: 68,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if(_isPowerOn)
-                      SliderWidget(
-                        initialSliderValue: _sliderValue,
-                        onSliderValueChanged: (double value) {
-                          setState(() {
-                            _sliderValue = value;
-                          });
+                      if (_isPowerOn)
+                        SliderWidget(
+                          initialSliderValue: _sliderValue,
+                          onSliderValueChanged: (double value) {
+                            setState(() {
+                              _sliderValue = value;
+                            });
 
-                          FirebaseFirestore.instance
-                              .collection('EspData')
-                              .doc('Sent From Mobile')
-                              .update({'sliderValue': value.round()})
-                              .then((_) =>
-                                  print('Slider value updated successfully'))
-                              .catchError((error) => print(
-                                  'Failed to update slider value: $error'));
-                        },
-                      ),
+                            FirebaseFirestore.instance
+                                .collection('EspData')
+                                .doc('Sent From Mobile')
+                                .update({'sliderValue': value.round()})
+                                .then((_) =>
+                                    print('Slider value updated successfully'))
+                                .catchError((error) => print(
+                                    'Failed to update slider value: $error'));
+                          },
+                        ),
                     ],
                   ),
                 ),
@@ -622,9 +622,34 @@ class _SliderWidgetState extends State<SliderWidget> {
             widget.onSliderValueChanged(value);
           },
           min: 0.0,
-          max: 100.0,
-          divisions: 100,
+          max: 4.0,
+          divisions: 4,
+          label: _sliderValue.toString(),
         ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                'Very Low',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Low',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'High',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Very High',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        )
       ],
     );
   }
