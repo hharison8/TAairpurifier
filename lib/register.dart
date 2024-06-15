@@ -105,7 +105,7 @@ class _RegisterState extends State<Register> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Sign In',
+                            'Sign Up',
                             style: TextStyle(
                                 fontFamily: "Railway",
                                 color: Color(0xff4c505b),
@@ -140,7 +140,7 @@ class _RegisterState extends State<Register> {
                             Navigator.pushNamed(context, '/');
                           },
                           child: const Text(
-                            'Sign Up',
+                            'Sign In',
                             style: TextStyle(
                                 fontFamily: "Railway",
                                 decoration: TextDecoration.underline,
