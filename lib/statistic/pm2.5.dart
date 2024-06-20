@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,49 @@ class PM25 extends StatefulWidget {
 }
 
 class _PM25State extends State<PM25> {
+  List<FlSpot> _pmSpots = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPMValues();
+  }
+
+  void _fetchPMValues() {
+    FirebaseFirestore.instance
+        .collection('EspData')
+        .doc('pm')
+        .snapshots()
+        .listen((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        var data = documentSnapshot.data() as Map<String, dynamic>;
+        if (data != null) {
+          List<FlSpot> newSpots = [];
+          print('Fetched document data: $data'); // Debug print for raw data
+          for (int i = 0; i < 13; i++) {
+            String fieldName = 'PM25_$i';
+            if (data.containsKey(fieldName)) {
+              double value = double.tryParse(data[fieldName].toString()) ?? 0.0;
+              newSpots.add(FlSpot(i.toDouble(), value));
+            } else {
+              print(
+                  'Field $fieldName does not exist in document'); // Debug print for missing field
+            }
+          }
+          setState(() {
+            _pmSpots = newSpots;
+          });
+          // Debug: Print the spots to ensure they are correct
+          print('Fetched PM spots: $_pmSpots');
+        }
+      } else {
+        print('Document does not exist');
+      }
+    }, onError: (error) {
+      print("Failed to fetch PM values: $error");
+    });
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
@@ -22,8 +66,9 @@ class _PM25State extends State<PM25> {
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50)),
+                bottomLeft: Radius.circular(50),
+                bottomRight: Radius.circular(50),
+              ),
             ),
             child: AspectRatio(
               aspectRatio: 1,
@@ -31,17 +76,7 @@ class _PM25State extends State<PM25> {
                 LineChartData(
                   lineBarsData: [
                     LineChartBarData(
-                      spots: const [
-                        FlSpot(0, 70),
-                        FlSpot(3, 52),
-                        FlSpot(6, 480),
-                        FlSpot(9, 121),
-                        FlSpot(12, 44),
-                        FlSpot(15, 200),
-                        FlSpot(18, 302),
-                        FlSpot(21, 70),
-                        FlSpot(24, 36),
-                      ],
+                      spots: _pmSpots,
                       isCurved: true,
                       dotData: const FlDotData(show: true),
                       color: Colors.blue,
@@ -53,7 +88,7 @@ class _PM25State extends State<PM25> {
                     ),
                   ],
                   minX: 0,
-                  maxX: 24,
+                  maxX: 12,
                   minY: 0,
                   maxY: 500,
                   borderData: FlBorderData(
@@ -75,23 +110,44 @@ class _PM25State extends State<PM25> {
                         getTitlesWidget: (value, meta) {
                           String text = '';
                           switch (value.toInt()) {
+                            case 0:
+                              text = '0';
+                              break;
                             case 1:
                               text = '1';
+                              break;
+                            case 2:
+                              text = '2';
+                              break;
+                            case 3:
+                              text = '3';
+                              break;
+                            case 4:
+                              text = '4';
                               break;
                             case 5:
                               text = '5';
                               break;
+                            case 6:
+                              text = '6';
+                              break;
+                            case 7:
+                              text = '7';
+                              break;
+                            case 8:
+                              text = '8';
+                              break;
+                            case 9:
+                              text = '9';
+                              break;
                             case 10:
                               text = '10';
                               break;
-                            case 15:
-                              text = '15';
+                            case 11:
+                              text = '11';
                               break;
-                            case 20:
-                              text = '20';
-                              break;
-                            case 24:
-                              text = '24';
+                            case 12:
+                              text = '12';
                               break;
                           }
                           return Text(text);
@@ -99,7 +155,6 @@ class _PM25State extends State<PM25> {
                       ),
                     ),
                     rightTitles: AxisTitles(
-                      /*axisNameWidget: const Text('Value'),*/
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 30,

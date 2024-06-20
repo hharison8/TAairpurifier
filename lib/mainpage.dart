@@ -435,7 +435,7 @@ class _mainpageState extends State<mainpage> {
                           ),
                           child: Center(
                             child: _isAutoMode
-                                ? Text(
+                                ? const Text(
                                     'A',
                                     style: TextStyle(
                                       fontSize: 60,
@@ -445,7 +445,7 @@ class _mainpageState extends State<mainpage> {
                                       decorationColor: Colors.white,
                                     ),
                                   )
-                                : Icon(
+                                : const Icon(
                                     Icons.touch_app_sharp,
                                     size: 60,
                                     color: Color.fromRGBO(178, 209, 238, 1),
@@ -629,22 +629,14 @@ class _SliderWidgetState extends State<SliderWidget> {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Very Low',
-                style: TextStyle(color: Colors.white),
-              ),
               Text(
                 'Low',
                 style: TextStyle(color: Colors.white),
               ),
               Text(
                 'High',
-                style: TextStyle(color: Colors.white),
-              ),
-              Text(
-                'Very High',
                 style: TextStyle(color: Colors.white),
               ),
             ],
