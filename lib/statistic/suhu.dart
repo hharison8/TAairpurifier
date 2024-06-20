@@ -29,7 +29,7 @@ class _SuhuState extends State<Suhu> {
         if (data != null) {
           List<FlSpot> newSpots = [];
           print('Fetched document data: $data'); // Debug print for raw data
-          for (int i = 0; i < 13; i++) {
+          for (int i = 0; i < 25; i++) {
             String fieldName = 'Temperature_$i';
             if (data.containsKey(fieldName)) {
               double value = double.tryParse(data[fieldName].toString()) ?? 0.0;
@@ -88,7 +88,7 @@ class _SuhuState extends State<Suhu> {
                     ),
                   ],
                   minX: 0,
-                  maxX: 12,
+                  maxX: 24,
                   minY: 0,
                   maxY: 100,
                   borderData: FlBorderData(
@@ -148,6 +148,42 @@ class _SuhuState extends State<Suhu> {
                               break;
                             case 12:
                               text = '12';
+                              break;
+                            case 13:
+                              text = '13';
+                              break;
+                            case 14:
+                              text = '14';
+                              break;
+                            case 15:
+                              text = '15';
+                              break;
+                            case 16:
+                              text = '16';
+                              break;
+                            case 17:
+                              text = '17';
+                              break;
+                            case 18:
+                              text = '18';
+                              break;
+                            case 19:
+                              text = '19';
+                              break;
+                            case 20:
+                              text = '20';
+                              break;
+                            case 21:
+                              text = '21';
+                              break;
+                            case 22:
+                              text = '22';
+                              break;
+                            case 23:
+                              text = '23';
+                              break;
+                            case 24:
+                              text = '24';
                               break;
                           }
                           return Text(text);

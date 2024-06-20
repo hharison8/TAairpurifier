@@ -13,7 +13,7 @@ class _mainpageState extends State<mainpage> {
   bool _isPowerOn = false;
   bool _isAutoMode = false;
   int number = 0;
-  double _sliderValue = 0.0;
+  double _sliderValue = 1.0;
 
   @override
   void initState() {
@@ -385,7 +385,7 @@ class _mainpageState extends State<mainpage> {
               ),
               SizedBox(
                 width: 400,
-                height: 156,
+                height: 140,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -544,9 +544,7 @@ class _mainpageState extends State<mainpage> {
                 ),
               ),
               if (_showSlider)
-                SizedBox(
-                  width: 400,
-                  height: 68,
+                Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -621,9 +619,9 @@ class _SliderWidgetState extends State<SliderWidget> {
             });
             widget.onSliderValueChanged(value);
           },
-          min: 0.0,
+          min: 1.0,
           max: 4.0,
-          divisions: 4,
+          divisions: 3,
           label: _sliderValue.toString(),
         ),
         const Padding(
