@@ -388,157 +388,179 @@ class _mainpageState extends State<mainpage> {
                 height: 140,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        if (!_isPowerOn) {
-                          return; // Do nothing if power is off
-                        }
-                        setState(() {
-                          _isAutoMode = !_isAutoMode;
-                          _showSlider =
-                              !_isAutoMode; // Toggle slider visibility
-                        });
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (!_isPowerOn) {
+                              return; // Do nothing if power is off
+                            }
+                            setState(() {
+                              _isAutoMode = !_isAutoMode;
+                              _showSlider =
+                                  !_isAutoMode; // Toggle slider visibility
+                            });
 
-                        FirebaseFirestore.instance
-                            .collection('EspData')
-                            .doc('Sent From Mobile')
-                            .update({'autoMode': _isAutoMode})
-                            .then((_) => print('Mode updated successfully'))
-                            .catchError((error) =>
-                                print('Failed to update mode: $error'));
-                      },
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 100),
-                        transform: _isAutoMode
-                            ? Matrix4.translationValues(0, 3, 0)
-                            : Matrix4.translationValues(0, 0, 0),
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _isAutoMode
-                                ? Color.fromRGBO(178, 209, 238, 1)
-                                : Colors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(2, 2),
-                                  blurRadius: 5),
-                              BoxShadow(
-                                  color: Colors.white,
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 5),
-                            ],
-                          ),
-                          child: Center(
-                            child: _isAutoMode
-                                ? const Text(
-                                    'A',
-                                    style: TextStyle(
-                                      fontSize: 60,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white,
-                                    ),
-                                  )
-                                : const Icon(
-                                    Icons.touch_app_sharp,
-                                    size: 60,
-                                    color: Color.fromRGBO(178, 209, 238, 1),
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        setState(() {
-                          _isPowerOn = !_isPowerOn;
-                        });
-
-                        // Update the power state in Firestore
-                        FirebaseFirestore.instance
-                            .collection('EspData')
-                            .doc('Sent From Mobile')
-                            .update({'powerState': _isPowerOn})
-                            .then((_) =>
-                                print('Power state updated successfully'))
-                            .catchError((error) =>
-                                print('Failed to update power state: $error'));
-
-                        // If power is turned on, fetch AutoMode value from Firestore
-                        if (_isPowerOn) {
-                          try {
-                            DocumentSnapshot document = await FirebaseFirestore
-                                .instance
+                            FirebaseFirestore.instance
                                 .collection('EspData')
                                 .doc('Sent From Mobile')
-                                .get();
-
-                            var data = document
-                                .data(); // Get the data from the document
-                            if (data != null) {
-                              // Check if the data is not null
-                              Map<String, dynamic> dataMap = data as Map<String,
-                                  dynamic>; // Cast to Map<String, dynamic>
-                              bool autoMode = dataMap['autoMode'] ??
-                                  false; // Safely access 'autoMode' with null-aware operator
-
-                              setState(() {
-                                _isAutoMode = autoMode;
-                                _showSlider =
-                                    !autoMode; // If autoMode is true, showSlider should be false, and vice versa
-                              });
-                            } else {
-                              print(
-                                  'No data found in the document'); // Handle the case where data is null
-                            }
-                          } catch (error) {
-                            print(
-                                'Failed to fetch AutoMode value: $error'); // Handle any errors that occur during the fetch
-                          }
-                        }
-                      },
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 100),
-                        transform: _isPowerOn
-                            ? Matrix4.translationValues(0, 3, 0)
-                            : Matrix4.translationValues(0, 0, 0),
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          //margin: const EdgeInsets.only(top: 60),
-                          decoration: BoxDecoration(
-                            color: _isPowerOn
-                                ? Color.fromRGBO(178, 209, 238, 1)
-                                : Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(2, 2),
-                                  blurRadius: 5),
-                              BoxShadow(
-                                  color: Colors.white,
-                                  offset: Offset(-1, -1),
-                                  blurRadius: 5),
-                            ],
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.power_settings_new_sharp,
-                              size: 80,
-                              color: _isPowerOn
-                                  ? Colors.white
-                                  : Color.fromRGBO(178, 209, 238, 1),
+                                .update({'autoMode': _isAutoMode})
+                                .then((_) => print('Mode updated successfully'))
+                                .catchError((error) =>
+                                    print('Failed to update mode: $error'));
+                          },
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 100),
+                            transform: _isAutoMode
+                                ? Matrix4.translationValues(0, 3, 0)
+                                : Matrix4.translationValues(0, 0, 0),
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _isAutoMode
+                                    ? Color.fromRGBO(178, 209, 238, 1)
+                                    : Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.grey,
+                                      offset: Offset(2, 2),
+                                      blurRadius: 5),
+                                  BoxShadow(
+                                      color: Colors.white,
+                                      offset: Offset(-1, -1),
+                                      blurRadius: 5),
+                                ],
+                              ),
+                              child: Center(
+                                child: _isAutoMode
+                                    ? const Text(
+                                        'A',
+                                        style: TextStyle(
+                                          fontSize: 60,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: Colors.white,
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.touch_app_sharp,
+                                        size: 60,
+                                        color: Color.fromRGBO(178, 209, 238, 1),
+                                      ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          'Mode',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              _isPowerOn = !_isPowerOn;
+                            });
+
+                            // Update the power state in Firestore
+                            FirebaseFirestore.instance
+                                .collection('EspData')
+                                .doc('Sent From Mobile')
+                                .update({'powerState': _isPowerOn})
+                                .then((_) =>
+                                    print('Power state updated successfully'))
+                                .catchError((error) => print(
+                                    'Failed to update power state: $error'));
+
+                            // If power is turned on, fetch AutoMode value from Firestore
+                            if (_isPowerOn) {
+                              try {
+                                DocumentSnapshot document =
+                                    await FirebaseFirestore.instance
+                                        .collection('EspData')
+                                        .doc('Sent From Mobile')
+                                        .get();
+
+                                var data = document
+                                    .data(); // Get the data from the document
+                                if (data != null) {
+                                  // Check if the data is not null
+                                  Map<String, dynamic> dataMap = data as Map<
+                                      String,
+                                      dynamic>; // Cast to Map<String, dynamic>
+                                  bool autoMode = dataMap['autoMode'] ??
+                                      false; // Safely access 'autoMode' with null-aware operator
+
+                                  setState(() {
+                                    _isAutoMode = autoMode;
+                                    _showSlider =
+                                        !autoMode; // If autoMode is true, showSlider should be false, and vice versa
+                                  });
+                                } else {
+                                  print(
+                                      'No data found in the document'); // Handle the case where data is null
+                                }
+                              } catch (error) {
+                                print(
+                                    'Failed to fetch AutoMode value: $error'); // Handle any errors that occur during the fetch
+                              }
+                            }
+                          },
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 100),
+                            transform: _isPowerOn
+                                ? Matrix4.translationValues(0, 3, 0)
+                                : Matrix4.translationValues(0, 0, 0),
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              //margin: const EdgeInsets.only(top: 60),
+                              decoration: BoxDecoration(
+                                color: _isPowerOn
+                                    ? Color.fromRGBO(178, 209, 238, 1)
+                                    : Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.grey,
+                                      offset: Offset(2, 2),
+                                      blurRadius: 5),
+                                  BoxShadow(
+                                      color: Colors.white,
+                                      offset: Offset(-1, -1),
+                                      blurRadius: 5),
+                                ],
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.power_settings_new_sharp,
+                                  size: 80,
+                                  color: _isPowerOn
+                                      ? Colors.white
+                                      : Color.fromRGBO(178, 209, 238, 1),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          'Power',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ],
                 ),

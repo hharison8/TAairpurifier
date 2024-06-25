@@ -29,7 +29,7 @@ class _COState extends State<CO> {
         if (data != null) {
           List<FlSpot> newSpots = [];
           print('Fetched document data: $data'); // Debug print for raw data
-          for (int i = 0; i < 25; i++) {
+          for (int i = 0; i < 13; i++) {
             String fieldName = 'CO_$i';
             if (data.containsKey(fieldName)) {
               double value = double.tryParse(data[fieldName].toString()) ?? 0.0;
@@ -88,7 +88,7 @@ class _COState extends State<CO> {
                     ),
                   ],
                   minX: 0,
-                  maxX: 24,
+                  maxX: 12,
                   minY: 0,
                   maxY: 500,
                   borderData: FlBorderData(
@@ -148,84 +148,6 @@ class _COState extends State<CO> {
                               break;
                             case 12:
                               text = '12';
-                              break;
-                            case 13:
-                              text = '13';
-                              break;
-                            case 14:
-                              text = '14';
-                              break;
-                            case 15:
-                              text = '15';
-                              break;
-                            case 16:
-                              text = '16';
-                              break;
-                            case 17:
-                              text = '17';
-                              break;
-                            case 18:
-                              text = '18';
-                              break;
-                            case 19:
-                              text = '19';
-                              break;
-                            case 20:
-                              text = '20';
-                              break;
-                            case 21:
-                              text = '21';
-                              break;
-                            case 22:
-                              text = '22';
-                              break;
-                            case 23:
-                              text = '23';
-                              break;
-                            case 24:
-                              text = '24';
-                              break;
-                          }
-                          return Text(text);
-                        },
-                      ),
-                    ),
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 30,
-                        getTitlesWidget: (value, meta) {
-                          String text = '';
-                          switch (value.toInt()) {
-                            case 50:
-                              text = '50';
-                              break;
-                            case 100:
-                              text = '100';
-                              break;
-                            case 150:
-                              text = '150';
-                              break;
-                            case 200:
-                              text = '200';
-                              break;
-                            case 250:
-                              text = '250';
-                              break;
-                            case 300:
-                              text = '300';
-                              break;
-                            case 350:
-                              text = '350';
-                              break;
-                            case 400:
-                              text = '400';
-                              break;
-                            case 450:
-                              text = '450';
-                              break;
-                            case 500:
-                              text = '500';
                               break;
                           }
                           return Text(text);
