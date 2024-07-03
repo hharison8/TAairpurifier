@@ -21,6 +21,7 @@ class _StatisticState extends State<Statistic> {
             centerTitle: true,
             automaticallyImplyLeading: false,
             bottom: const TabBar(
+              indicatorColor: Color.fromRGBO(160, 199, 235, 1),
               tabs: [
                 Tab(text: 'PM2.5'),
                 Tab(text: 'CO'),

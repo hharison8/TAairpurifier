@@ -9,6 +9,7 @@ import 'package:flutter_application_1/statistic/co.dart';
 import 'package:flutter_application_1/statistic/lembab.dart';
 import 'package:flutter_application_1/statistic/pm2.5.dart';
 import 'package:flutter_application_1/statistic/suhu.dart';
+import 'package:flutter_application_1/statistic2.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -38,6 +39,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const bottomnav());
       case '/setting':
         return MaterialPageRoute(builder: (_) => const Setting());
+      case '/statistic2':
+        return MaterialPageRoute(builder: (_) => Statistic2());
       default:
         return _errorRoute();
     }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/mainpage.dart';
 import 'package:flutter_application_1/setting.dart';
 import 'package:flutter_application_1/statistic.dart';
+import 'package:flutter_application_1/statistic2.dart';
 
 class bottomnav extends StatefulWidget {
   const bottomnav({Key? key}) : super(key: key);

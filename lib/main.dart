@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/routes.dart';
+import 'package:flutter_application_1/statistic/chart_data_provider.dart';
+import 'package:provider/provider.dart';
+import 'routes.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +22,28 @@ Future main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    onGenerateRoute: RouteGenerator.generateRoute,
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ChartDataProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 Future initialization(BuildContext? context) async {
   await Future.delayed(const Duration(seconds: 2));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: RouteGenerator.generateRoute,
+    );
+  }
 }
