@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/statistic/chart_data_provider.dart';
+import 'package:flutter_application_1/statistic/co_data.dart';
+import 'package:flutter_application_1/statistic/lembab_data.dart';
+import 'package:flutter_application_1/statistic/pm2.5_data.dart';
+import 'package:flutter_application_1/statistic/suhu_data.dart';
 import 'package:provider/provider.dart';
 import 'routes.dart';
 
@@ -25,7 +28,10 @@ Future main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ChartDataProvider()),
+        ChangeNotifierProvider(create: (_) => PM25Data()),
+        ChangeNotifierProvider(create: (_) => COData()),
+        ChangeNotifierProvider(create: (_) => LembabData()),
+        ChangeNotifierProvider(create: (_) => SuhuData()),
       ],
       child: const MyApp(),
     ),

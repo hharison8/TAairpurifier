@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/statistic/suhu_data.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Suhu extends StatefulWidget {
@@ -10,10 +12,8 @@ class Suhu extends StatefulWidget {
   _SuhuState createState() => _SuhuState();
 }
 
-class _SuhuState extends State<Suhu> {
-  List<DataPoint> chartData = [];
+class _SuhuState extends State<Suhu> with AutomaticKeepAliveClientMixin {
   Timer? _timer;
-  double globalCurrentSensorValue = 0;
 
   @override
   void dispose() {
@@ -24,19 +24,20 @@ class _SuhuState extends State<Suhu> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 10), _generateTrace);
+    _timer = Timer.periodic(const Duration(seconds: 5), _generateTrace);
   }
 
   _generateTrace(Timer t) {
     if (mounted) {
-      setState(() {
-        chartData.add(DataPoint(DateTime.now(), globalCurrentSensorValue));
-      });
+      var provider = Provider.of<SuhuData>(context, listen: false);
+      provider.addDataSuhu(
+          DataSuhu(DateTime.now(), provider.globalCurrentSensorValue));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: const Color.fromRGBO(178, 209, 238, 1),
       body: Container(
@@ -52,6 +53,9 @@ class _SuhuState extends State<Suhu> {
     );
   }
 
+  @override
+  bool get wantKeepAlive => true;
+
   Widget buildStreamBuilder() {
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('EspData').snapshots(),
@@ -63,27 +67,33 @@ class _SuhuState extends State<Suhu> {
             ),
           );
         } else {
+          var provider = Provider.of<SuhuData>(context, listen: false);
           var documents = snapshot.data?.docs ?? [];
           for (var f in documents) {
             if (f.id == 'DHT11') {
               print('current Suhu = ${f['Temperature']}');
-              globalCurrentSensorValue = double.parse(f['Temperature']);
+              provider
+                  .setGlobalCurrentSensorValue(double.parse(f['Temperature']));
             }
           }
 
           return Center(
-            child: SfCartesianChart(
-              primaryXAxis: DateTimeAxis(),
-              primaryYAxis:
-                  NumericAxis(minimum: 0, maximum: 100, opposedPosition: true),
-              series: <ChartSeries>[
-                LineSeries<DataPoint, DateTime>(
-                  dataSource: chartData,
-                  xValueMapper: (DataPoint data, _) => data.time,
-                  yValueMapper: (DataPoint data, _) => data.value,
-                  width: 5,
-                ),
-              ],
+            child: Consumer<SuhuData>(
+              builder: (context, chartSuhuProvider, child) {
+                return SfCartesianChart(
+                  primaryXAxis: DateTimeAxis(),
+                  primaryYAxis: NumericAxis(
+                      minimum: 0, maximum: 50, opposedPosition: true),
+                  series: <ChartSeries>[
+                    LineSeries<DataSuhu, DateTime>(
+                      dataSource: chartSuhuProvider.chartSuhu,
+                      xValueMapper: (DataSuhu data, _) => data.time,
+                      yValueMapper: (DataSuhu data, _) => data.value,
+                      width: 5,
+                    ),
+                  ],
+                );
+              },
             ),
           );
         }
@@ -92,9 +102,9 @@ class _SuhuState extends State<Suhu> {
   }
 }
 
-class DataPoint {
+class DataSuhu {
   final DateTime time;
   final double value;
 
-  DataPoint(this.time, this.value);
+  DataSuhu(this.time, this.value);
 }

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'chart_data_provider.dart';
+import 'pm2.5_data.dart';
 
 class PM25 extends StatefulWidget {
   const PM25({Key? key}) : super(key: key);
@@ -29,9 +29,9 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
 
   _generateTrace(Timer t) {
     if (mounted) {
-      var provider = Provider.of<ChartDataProvider>(context, listen: false);
-      provider.addDataPoint(
-          DataPoint(DateTime.now(), provider.globalCurrentSensorValue));
+      var provider = Provider.of<PM25Data>(context, listen: false);
+      provider
+          .addDataPM(DataPM(DateTime.now(), provider.globalCurrentSensorValue));
     }
   }
 
@@ -68,7 +68,7 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
             ),
           );
         } else {
-          var provider = Provider.of<ChartDataProvider>(context, listen: false);
+          var provider = Provider.of<PM25Data>(context, listen: false);
           var documents = snapshot.data?.docs ?? [];
           for (var f in documents) {
             if (f.id == 'DHT11') {
@@ -78,17 +78,17 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
           }
 
           return Center(
-            child: Consumer<ChartDataProvider>(
-              builder: (context, chartDataProvider, child) {
+            child: Consumer<PM25Data>(
+              builder: (context, chartPMProvider, child) {
                 return SfCartesianChart(
                   primaryXAxis: DateTimeAxis(),
                   primaryYAxis: NumericAxis(
                       minimum: 0, maximum: 260, opposedPosition: true),
                   series: <ChartSeries>[
-                    LineSeries<DataPoint, DateTime>(
-                      dataSource: chartDataProvider.chartData,
-                      xValueMapper: (DataPoint data, _) => data.time,
-                      yValueMapper: (DataPoint data, _) => data.value,
+                    LineSeries<DataPM, DateTime>(
+                      dataSource: chartPMProvider.chartPM,
+                      xValueMapper: (DataPM data, _) => data.time,
+                      yValueMapper: (DataPM data, _) => data.value,
                       width: 5,
                     ),
                   ],
@@ -102,9 +102,9 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
   }
 }
 
-class DataPoint {
+class DataPM {
   final DateTime time;
   final double value;
 
-  DataPoint(this.time, this.value);
+  DataPM(this.time, this.value);
 }
