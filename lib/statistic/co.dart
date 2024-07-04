@@ -83,7 +83,7 @@ class _COState extends State<CO> with AutomaticKeepAliveClientMixin {
                 return SfCartesianChart(
                   primaryXAxis: DateTimeAxis(),
                   primaryYAxis: NumericAxis(
-                      minimum: 0, maximum: 25, opposedPosition: true),
+                      minimum: 0, maximum: 26, opposedPosition: true),
                   series: <ChartSeries>[
                     LineSeries<DataCO, DateTime>(
                       dataSource: chartCOProvider.chartCO,

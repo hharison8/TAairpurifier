@@ -15,12 +15,12 @@ class PM25Data with ChangeNotifier {
 
   void setGlobalCurrentSensorValue(double value) {
     _globalCurrentSensorValue = value;
-    _removeOldData();
+    // _removeOldData();
     notifyListeners();
   }
 
-  void _removeOldData() {
-    final now = DateTime.now();
-    _chartPM.removeWhere((data) => now.difference(data.time).inHours >= 3);
-  }
+  // void _removeOldData() {
+  //   final now = DateTime.now();
+  //   _chartPM.removeWhere((data) => now.difference(data.time).inHours >= 3);
+  // }
 }
