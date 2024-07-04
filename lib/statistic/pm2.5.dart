@@ -14,9 +14,11 @@ class PM25 extends StatefulWidget {
 
 class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
   Timer? _timer;
+  bool _isDisposed = false;
 
   @override
   void dispose() {
+    _isDisposed = true;
     _timer?.cancel();
     super.dispose();
   }
@@ -28,7 +30,7 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
   }
 
   _generateTrace(Timer t) {
-    if (mounted) {
+    if (!_isDisposed) {
       var provider = Provider.of<PM25Data>(context, listen: false);
       provider
           .addDataPM(DataPM(DateTime.now(), provider.globalCurrentSensorValue));
@@ -47,7 +49,7 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(50)),
+          borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
         child: buildStreamBuilder(),
       ),
@@ -72,8 +74,10 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
           var documents = snapshot.data?.docs ?? [];
           for (var f in documents) {
             if (f.id == 'DHT11') {
-              print('current PM = ${f['PM25']}');
-              provider.setGlobalCurrentSensorValue(double.parse(f['PM25']));
+              if (!_isDisposed) {
+                print('current PM = ${f['PM25']}');
+                provider.setGlobalCurrentSensorValue(double.parse(f['PM25']));
+              }
             }
           }
 

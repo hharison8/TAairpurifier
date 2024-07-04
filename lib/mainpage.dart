@@ -266,7 +266,7 @@ class _mainpageState extends State<mainpage> {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 3),
                                     child: Text(
-                                      '${CO.toStringAsFixed(1)}',
+                                      '${CO.toStringAsFixed(2)}',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -361,7 +361,7 @@ class _mainpageState extends State<mainpage> {
                                         ),
                                       ),
                                       const Text(
-                                        'Kelembaban',
+                                        'Lembab',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 15),
                                       ),

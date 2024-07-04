@@ -47,7 +47,7 @@ class _SuhuState extends State<Suhu> with AutomaticKeepAliveClientMixin {
         padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
         decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(50))),
+            borderRadius: BorderRadius.all(Radius.circular(25))),
         child: buildStreamBuilder(),
       ),
     );

@@ -26,7 +26,7 @@ class _StatisticState extends State<Statistic> {
                 Tab(text: 'PM2.5'),
                 Tab(text: 'CO'),
                 Tab(text: 'Suhu'),
-                Tab(text: 'Kelembaban'),
+                Tab(text: 'Lembab'),
               ],
               indicatorSize: TabBarIndicatorSize.tab,
             ),
