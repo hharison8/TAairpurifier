@@ -361,7 +361,7 @@ class _mainpageState extends State<mainpage> {
                                         ),
                                       ),
                                       const Text(
-                                        'Kelembaban',
+                                        'Lembab',
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 15),
                                       ),
