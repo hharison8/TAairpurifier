@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+
 import 'co.dart';
 
 class COData with ChangeNotifier {
@@ -15,8 +16,10 @@ class COData with ChangeNotifier {
 
   void setGlobalCurrentSensorValue(double value) {
     _globalCurrentSensorValue = value;
-    // _removeOldData();
-    notifyListeners();
+    // Defer notifyListeners() call to avoid calling during build
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 
   // void _removeOldData() {

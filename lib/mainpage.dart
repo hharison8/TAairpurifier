@@ -266,7 +266,7 @@ class _mainpageState extends State<mainpage> {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 3),
                                     child: Text(
-                                      '${CO.toStringAsFixed(1)}',
+                                      '${CO.toStringAsFixed(2)}',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -404,7 +404,7 @@ class _mainpageState extends State<mainpage> {
 
                             FirebaseFirestore.instance
                                 .collection('EspData')
-                                .doc('Sent From Mobile')
+                                .doc('DHT11')
                                 .update({'autoMode': _isAutoMode})
                                 .then((_) => print('Mode updated successfully'))
                                 .catchError((error) =>
@@ -475,7 +475,7 @@ class _mainpageState extends State<mainpage> {
                             // Update the power state in Firestore
                             FirebaseFirestore.instance
                                 .collection('EspData')
-                                .doc('Sent From Mobile')
+                                .doc('DHT11')
                                 .update({'powerState': _isPowerOn})
                                 .then((_) =>
                                     print('Power state updated successfully'))
@@ -488,7 +488,7 @@ class _mainpageState extends State<mainpage> {
                                 DocumentSnapshot document =
                                     await FirebaseFirestore.instance
                                         .collection('EspData')
-                                        .doc('Sent From Mobile')
+                                        .doc('DHT11')
                                         .get();
 
                                 var data = document
@@ -580,7 +580,7 @@ class _mainpageState extends State<mainpage> {
 
                             FirebaseFirestore.instance
                                 .collection('EspData')
-                                .doc('Sent From Mobile')
+                                .doc('DHT11')
                                 .update({'sliderValue': value.round()})
                                 .then((_) =>
                                     print('Slider value updated successfully'))
