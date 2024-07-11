@@ -26,7 +26,7 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 5), _generateTrace);
+    _timer = Timer.periodic(const Duration(minutes: 1), _generateTrace);
   }
 
   _generateTrace(Timer t) {
@@ -74,9 +74,8 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
           var documents = snapshot.data?.docs ?? [];
           for (var f in documents) {
             if (f.id == 'DHT11') {
-                print('current PM = ${f['PM25']}');
-                provider.setGlobalCurrentSensorValue(double.parse(f['PM25']));
-              
+              print('current PM = ${f['PM25']}');
+              provider.setGlobalCurrentSensorValue(double.parse(f['PM25']));
             }
           }
 

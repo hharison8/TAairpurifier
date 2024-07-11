@@ -48,15 +48,15 @@ class _mainpageState extends State<mainpage> {
       if (!_isPowerOn) {
         return const Color.fromRGBO(160, 199, 235, 1);
       }
-      if (number > 250) {
+      if (number > 300) {
         return Colors.red.shade900;
-      } else if (number > 150) {
+      } else if (number > 200) {
         return Colors.purple;
-      } else if (number > 55) {
+      } else if (number > 150) {
         return Colors.red;
-      } else if (number > 35) {
+      } else if (number > 100) {
         return Colors.orange;
-      } else if (number > 12) {
+      } else if (number > 50) {
         return Colors.yellow;
       } else if (number > 0) {
         return Colors.green;

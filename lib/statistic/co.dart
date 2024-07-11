@@ -24,7 +24,7 @@ class _COState extends State<CO> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 5), _generateTrace);
+    _timer = Timer.periodic(const Duration(minutes: 1), _generateTrace);
   }
 
   _generateTrace(Timer t) {
