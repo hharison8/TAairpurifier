@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -161,17 +162,91 @@ class _RegisterState extends State<Register> {
   }
 
   void _signUp() async {
-    String username = _usernameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
+  String username = _usernameController.text;
+  String email = _emailController.text;
+  String password = _passwordController.text;
 
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-    if (user != null) {
-      print("User is succesfully created");
+    User? user = userCredential.user;
+
+    if (user!= null) {
+      print("User created successfully: $user");
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      String uid = user.uid;
+
+      // Create a new document for the user
+      await db.collection('users').doc(uid).set({
+        'username': username,
+        'email': email,
+        // Add more fields as needed
+      });
+
+      print("User document created in Firestore");
+
+      try {
+        await _cloneCollection(uid);
+      } catch (e) {
+        print("Error cloning collection: $e");
+      }
+
+      print("User created and Firestore collection initialized for user: $uid");
       Navigator.pushNamed(context, "/bottomnav");
     } else {
-      print("Some error happend");
+      print("User registration failed");
     }
+  } catch (e) {
+    print("Error creating user: $e");
   }
+}
+
+Future<void> _cloneCollection(String uid) async {
+  print("Cloning collection for user: $uid");
+  try {
+    // Authenticate the user
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Sign in the user anonymously
+      user = (await FirebaseAuth.instance.signInAnonymously()).user;
+    }
+
+    String? token;
+    if (user != null) {
+      token = await user.getIdToken();
+    } else {
+      // Handle the case where user is null
+    }
+
+    // Use the authentication token to authenticate the get() call
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    db.useFirestoreEmulator('localhost', 8080);
+    db.settings = const Settings(persistenceEnabled: true, sslEnabled: true);
+
+    CollectionReference sourceCollection = db.collection('EsPData');
+    CollectionReference targetCollection = db.collection('users').doc(uid).collection('EsPData');
+
+    // Add a delay to ensure the document has been written to Firestore
+    await Future.delayed(Duration(seconds: 1));
+
+    QuerySnapshot snapshot = await sourceCollection.get(GetOptions(source: Source.server));
+
+    print("Number of documents in source collection: ${snapshot.docs.length}");
+
+    if (snapshot.docs.isEmpty) {
+      print("No documents found in source collection");
+    } else {
+      for (var doc in snapshot.docs) {
+        await targetCollection.doc(doc.id).set(doc.data());
+      }
+
+      print("Documents cloned from 'EsPData' to 'EsPData' for user: $uid");
+    }
+  } catch (e) {
+    print("Error cloning collection: $e");
+  }
+}
 }
