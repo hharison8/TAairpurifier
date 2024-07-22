@@ -141,7 +141,7 @@ class _mainpageState extends State<mainpage> {
                           ),
                         ),
                         Text(
-                          'PM2.5',
+                          'AQI',
                           style: TextStyle(
                             color: getColor(),
                             fontSize: 24,

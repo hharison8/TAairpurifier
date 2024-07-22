@@ -26,7 +26,7 @@ class _PM25State extends State<PM25> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(minutes: 1), _generateTrace);
+    _timer = Timer.periodic(const Duration(seconds: 1), _generateTrace);
   }
 
   _generateTrace(Timer t) {
