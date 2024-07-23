@@ -19,6 +19,7 @@ class _mainpageState extends State<mainpage> {
   void initState() {
     super.initState();
     _fetchPMValue();
+    _initializeStates();
   }
 
   void _fetchPMValue() {
@@ -41,6 +42,31 @@ class _mainpageState extends State<mainpage> {
       print("Failed to fetch PM value: $error");
     });
   }
+
+Future<void> _initializeStates() async {
+  try {
+    DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection('EspData')
+        .doc('DHT11')
+        .get();
+
+    if (document.exists) {
+      var data = document.data() as Map<String, dynamic>;
+      if (mounted) {
+        setState(() {
+          _isPowerOn = data['powerState'] ?? false;
+          _isAutoMode = data['autoMode'] ?? false;
+          _sliderValue = (data['sliderValue'] ?? 0.0).toDouble();
+          _showSlider = !_isAutoMode;
+        });
+      }
+    } else {
+      print('Document does not exist');
+    }
+  } catch (e) {
+    print('Failed to initialize states: $e');
+  }
+}
 
   @override
   Widget build(BuildContext context) {
