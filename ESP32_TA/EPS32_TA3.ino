@@ -10,6 +10,7 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 #include "Adafruit_ILI9341.h"
+#include <TouchScreen.h>
 
 TFT_eSPI tft = TFT_eSPI();
 uint16_t touch_x = 0, touch_y = 0;
@@ -154,42 +155,6 @@ struct pms5003data {
  
 struct pms5003data data;
 
-void drawButtons() {
-  // Draw Button 1 (Power Button)
-  // if (powerState) {
-  //   tft.fillRoundRect(BUTTON1_X, BUTTON1_Y, BUTTON1_W, BUTTON1_H, 10, TFT_GREEN); // On state
-  //   tft.setTextColor(TFT_BLACK);
-  //   tft.setTextSize(2);
-  //   tft.drawCentreString("ON", BUTTON1_X + BUTTON1_W / 2, BUTTON1_Y + BUTTON1_H / 2 - 15, 2);
-  // } else {
-  //   tft.fillRoundRect(BUTTON1_X, BUTTON1_Y, BUTTON1_W, BUTTON1_H, 10, TFT_RED); // Off state
-  //   tft.setTextColor(TFT_BLACK);
-  //   tft.setTextSize(2);
-  //   tft.drawCentreString("OFF", BUTTON1_X + BUTTON1_W / 2, BUTTON1_Y + BUTTON1_H / 2 - 15, 2);
-  // }
-
-  // Draw Button 2 (Mode Button)
-  // if (autoMode) {
-  //   tft.fillRoundRect(BUTTON2_X, BUTTON2_Y, BUTTON2_W, BUTTON2_H, 10, TFT_BLUE); // Auto mode
-  // } else {
-  //   tft.fillRoundRect(BUTTON2_X, BUTTON2_Y, BUTTON2_W, BUTTON2_H, 10, TFT_ORANGE); // Manual mode
-  // }
-  // tft.setTextColor(TFT_BLACK);
-  // tft.setTextSize(2);
-  // tft.drawCentreString("Mode", BUTTON2_X + BUTTON2_W / 2, BUTTON2_Y + BUTTON2_H / 2 - 15, 2);
-
-  // Draw Fan Button
-  // if (autoMode) {
-  //   tft.fillRoundRect(BUTTON3_X, BUTTON3_Y, BUTTON3_W, BUTTON3_H, 10, TFT_DARKGREY); // Disabled state
-  //   tft.setTextColor(TFT_LIGHTGREY);
-  // } else {
-  //   tft.fillRoundRect(BUTTON3_X, BUTTON3_Y, BUTTON3_W, BUTTON3_H, 10, TFT_GREEN); // Default state
-  //   tft.setTextColor(TFT_BLACK);
-  // }
-  // tft.setTextSize(2);
-  // tft.drawCentreString("Fan: " + String(fanSpeed), BUTTON3_X + BUTTON3_W / 2, BUTTON3_Y + BUTTON3_H / 2 - 9, 1); // Display fan speed
-}
-
 void loop() {
   static unsigned long lastSensorReadTime = 0;
   static unsigned long lastSaveTime = 0;
@@ -222,10 +187,6 @@ void loop() {
       const char* documents_0_name = documents_0["name"];
       
       for (JsonPair documents_0_field : documents_0["fields"].as<JsonObject>()) {
-        unsigned char CO_FS = documents_0["fields"]["CO"]["stringValue"];
-        unsigned char Humidity_FS = documents_0["fields"]["Humidity"]["stringValue"];
-        unsigned char PM25_FS = documents_0["fields"]["PM25"]["stringValue"];
-        unsigned char Temperature_FS = documents_0["fields"]["Temperature"]["stringValue"];
         bool documents_0_fields_powerState_booleanValue = documents_0["fields"]["powerState"]["booleanValue"];
         bool documents_0_fields_autoMode_booleanValue = documents_0["fields"]["autoMode"]["booleanValue"];
         int documents_0_fields_sliderValue_integerValue = documents_0["fields"]["sliderValue"]["integerValue"];
@@ -244,13 +205,17 @@ void loop() {
             ratio = RS_gas/R0;
             float x = 1538.46 * ratio;
             ppm2 = ppm;
-            Serial.println(ppm2);
+            // Serial.println(ppm2);
             ppm = pow(x,-1.709);
             if (isnan(ppm)){
               ppm = ppm2;        
             }
+            if (ppm < 0.001){
+              ppm = 0.01;
+              ppm2 = 0.01;
+            }
             
-            //PM2.5
+            // PM2.5
             if (readPMSdata(&pmsSerial)) {
               // reading data was successful!
               Serial.println();
@@ -274,8 +239,8 @@ void loop() {
               Serial.println("---------------------------------------");
             }
             PM252 = PM25;
-            Serial.println(PM252); 
-            PM25 = data.pm25_env;
+            // Serial.println(PM252); 
+            PM25 = data.pm10_env;
             if (PM25>=250){
               PM25 = 250;
             }
@@ -314,7 +279,7 @@ void loop() {
           
               // Use the patchDocument method to update the Temperature and Humidity Firestore document
               if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "Temperature") && Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "Humidity") && Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "CO") && Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "PM25")) {
-                Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
+                // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
               }
               if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath2.c_str(), content.raw(), "PM25_0")){
                 // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
@@ -328,12 +293,6 @@ void loop() {
             } 
             else {
               Serial.println("Failed to read DHT data.");
-            }
-            for (int i = 11; i > 0; i--){
-              String(currentField)  = "PM_" + String(i);
-              String previousField = "PM_" + String(i - 1);
-              content.set("fields/" + currentField + ")/stringValue", String(PM252));
-              content.set("fields/currentField/stringValue", String(PM252));
             }
           }
             if (documents_0_fields_autoMode_booleanValue ==  true){
@@ -533,57 +492,57 @@ void loop() {
                 float HA1=0,HA2=0,HA3=0;
                 //Defuzzyfikasi
                 if (SPKK != 0){
-                  //((1400.00*SPKK)/(SPKK*7.00));
-                  HA=  1400.00*SPKK;
-                  HA1= SPKK*7.00;
-                  HA2= HA/HA1;
-                  if (PKK != 0){
-                    //(((1400.00*SPKK) + (7000.00*PKK))/((SPKK*7.00)+(PKK*7.00)));
-                    HA= (1400.00*SPKK) + (7000.00*PKK);
-                    HA1= (SPKK*7.00)+(PKK*7.00);
-                    HA2= HA/HA1;
-                  }
+                //((1400.00*SPKK)/(SPKK*7.00));
+                HA=  1400.00*SPKK;
+                HA1= SPKK*7.00;
+                HA2= HA/HA1;
                 }
                 if (PKK != 0){
                   //((4200.00*PKK)/(PKK*7.00));
                   HA=  4200.00*PKK;
                   HA1= PKK*7.00;
                   HA2= HA/HA1;
-                  if (MKK != 0){
-                    //(((4200.00*PKK) + (9800.00*MKK))/((PKK*7.00)+(MKK*7.00)));
-                    HA= (4200.00*PKK) + (9800.00*MKK);
-                    HA1= (PKK*7.00)+(MKK*7.00);
-                    HA2= HA/HA1;
-                  }
                 }
                 if (MKK !=0){
                   //((7000.00*MKK)/(MKK*7.00));
                   HA=  7000.00*MKK;
                   HA1= MKK*7.00;
                   HA2= HA/HA1;
-                  if (CKK != 0){
-                    //(((7000.00*MKK) + (12600.00*CKK))/((MKK*7.00)+(CKK*7.00)));
-                    HA= (7000.00*MKK) + (12600.00*CKK);
-                    HA1= (PKK*7.00)+(MKK*7.00);
-                    HA2= HA/HA1;
-                  }
                 }
                 if (CKK != 0){
                   //((12600.00*CKK)/(CKK*7.00));
                   HA=  12600.00*CKK;
                   HA1= CKK*7.00;
                   HA2= HA/HA1;
-                  if (SCKK !=0){
-                    //(((9800.00*CKK) + (15400.00*SCKK))/((CKK*7.00)+(SCKK*7.00)));
-                    HA= (9800.00*CKK) + (15400.00*SCKK);
-                    HA1= (CKK*7.00)+(SCKK*7.00);
-                    HA2= HA/HA1;
-                  }
                 }
                 if (SCKK != 0){
                   //HA =  ((15400.00*SCKK)/(SCKK*7.00));
                   HA=  15400.00*SCKK;
                   HA1= SCKK*7.00;
+                  HA2= HA/HA1;
+                }
+                if (SPKK != 0 && PKK != 0){//SPKK&PKK
+                  //(((1400.00*SPKK) + (4200.00*PKK))/((SPKK*7.00)+(PKK*7.00)));
+                  HA= (1400.00*SPKK) + (4200.00*PKK);
+                  HA1= (SPKK*7.00)+(PKK*7.00);
+                  HA2= HA/HA1;
+                }
+                if (PKK !=0 && MKK != 0){//PKK&MKK
+                  //(((7000.00*PKK) + (9800.00*MKK))/((PKK*7.00)+(MKK*7.00)));
+                  HA= (7000.00*PKK) + (9800.00*MKK);
+                  HA1= (PKK*7.00)+(MKK*7.00);
+                  HA2= HA/HA1;
+                }
+                if (MKK != 0 && CKK != 0){//MKK&CKK
+                  //(((9800.00*MKK) + (12600.00*CKK))/((MKK*7.00)+(CKK*7.00)));
+                  HA= (9800.00*MKK) + (12600.00*CKK);
+                  HA1= (PKK*7.00)+(MKK*7.00);
+                  HA2= HA/HA1;
+                }
+                if (CKK != 0 && SCKK !=0){//CKK&SCKK
+                  //(((12600.00*CKK) + (15400.00*SCKK))/((CKK*7.00)+(SCKK*7.00)));
+                  HA= (12600.00*CKK) + (15400.00*SCKK);
+                  HA1= (CKK*7.00)+(SCKK*7.00);
                   HA2= HA/HA1;
                 }
               
@@ -640,16 +599,15 @@ void loop() {
               
                 tft.setTextSize(3);   
                 tft.setCursor(29,185);
-                tft.print(humidity,1);
+                tft.print(String(humidity,1));
                 
                 tft.setTextSize(3);   
                 tft.setCursor(139,185);
-                tft.print(temperature,1);
-
+                tft.print(String(temperature,1));
               }
               tft.setTextColor(TFT_WHITE);
               tft.setTextSize(1);
-              tft.drawCentreString("PM2.5", 64, 20, 4); // Comment out to avoid font 4
+              tft.drawCentreString("AQI", 64, 20, 4); // Comment out to avoid font 4
               tft.drawRect(24, 15, 80, 90, TFT_YELLOW);
               tft.drawLine(24, 55, 103, 55, TFT_YELLOW);
 
@@ -667,8 +625,6 @@ void loop() {
               tft.drawCentreString("Lembab", 64, 135, 1); // Comment out to avoid font 4
               tft.drawRect(24, 125, 80, 90, TFT_YELLOW);
               tft.drawLine(24, 165, 103, 165, TFT_YELLOW);
-
-              drawButtons();
               
             uint16_t raw_x, raw_y;
             if (tft.getTouch(&raw_y, &raw_x)) {
@@ -695,14 +651,20 @@ void loop() {
             if (touch_x > BUTTON1_X && touch_x < BUTTON1_X + BUTTON1_W && touch_y > BUTTON1_Y && touch_y < BUTTON1_Y + BUTTON1_H) {
               Serial.println("Button 1 (ON/OFF) pressed");
               content.set("fields/powerState/booleanValue", false);
-              if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "powerState")){
-                Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
-              } 
+              // if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "powerState")){
+              //   // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
+              // } 
               delay(500);
               tft.fillRoundRect(BUTTON1_X, BUTTON1_Y, BUTTON1_W, BUTTON1_H, 10, TFT_RED); // Off state
               tft.setTextColor(TFT_BLACK);
               tft.setTextSize(2);
               tft.drawCentreString("OFF", BUTTON1_X + BUTTON1_W / 2, BUTTON1_Y + BUTTON1_H / 2 - 15, 2);
+              uint16_t raw_x, raw_y;
+              if (tft.getTouch(&raw_y, &raw_x)) {
+
+              }
+              uint16_t touch_x = map(raw_x, 0, 320, 0, 240);  // Adjust these values as needed
+              uint16_t touch_y = map(raw_y, 0, 240, 0, 320);  // Adjust these values as needed
             } 
 
             tft.fillRoundRect(BUTTON2_X, BUTTON2_Y, BUTTON2_W, BUTTON2_H, 10, TFT_BLUE); // Auto mode
@@ -712,14 +674,20 @@ void loop() {
             if (touch_x > BUTTON2_X && touch_x < BUTTON2_X + BUTTON2_W && touch_y > BUTTON2_Y && touch_y < BUTTON2_Y + BUTTON2_H) {
               Serial.println("Button 2 (Mode) pressed");
               content.set("fields/autoMode/booleanValue", false);
-              if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "autoMode")){
-                Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
-              }
+              // if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "autoMode")){
+              //   // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
+              // }
               delay(500);
               tft.fillRoundRect(BUTTON2_X, BUTTON2_Y, BUTTON2_W, BUTTON2_H, 10, TFT_ORANGE);
               tft.setTextColor(TFT_BLACK);
               tft.setTextSize(2);
               tft.drawCentreString("Mode", BUTTON2_X + BUTTON2_W / 2, BUTTON2_Y + BUTTON2_H / 2 - 15, 2);
+              uint16_t raw_x, raw_y;
+              if (tft.getTouch(&raw_y, &raw_x)) {
+
+              }
+              uint16_t touch_x = map(raw_x, 0, 320, 0, 240);  // Adjust these values as needed
+              uint16_t touch_y = map(raw_y, 0, 240, 0, 320);  // Adjust these values as needed
             }
 
             tft.fillRoundRect(BUTTON3_X, BUTTON3_Y, BUTTON3_W, BUTTON3_H, 10, TFT_DARKGREY); // Disabled state
@@ -730,7 +698,7 @@ void loop() {
             delay(10);
             //Delay before the next reading
 
-            Serial.println("MODE : Auto");
+            // Serial.println("MODE : Auto");
             SSCO = 0, SCO = 0, MCO = 0, BCO = 0, SBCO = 0;
             SSPM = 0, SPM = 0, MPM = 0, BPM = 0, SBPM = 0;
             SPKK = 0,PKK = 0,PKK1 = 0,PKK2 = 0,PKK3 = 0,MKK = 0,MKK1 = 0,MKK2 = 0,MKK3 = 0,MKK4 = 0,MKK5 = 0,CKK = 0,CKK1 = 0,CKK2 = 0,CKK3 = 0,CKK4 = 0,CKK5 = 0,CKK6 = 0,CKK7 = 0;
@@ -761,7 +729,7 @@ void loop() {
 
               tft.setTextColor(TFT_WHITE);
               tft.setTextSize(1);
-              tft.drawCentreString("PM2.5", 64, 20, 4); // Comment out to avoid font 4
+              tft.drawCentreString("AQI", 64, 20, 4); // Comment out to avoid font 4
               tft.drawRect(24, 15, 80, 90, TFT_YELLOW);
               tft.drawLine(24, 55, 103, 55, TFT_YELLOW);
 
