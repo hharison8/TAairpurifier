@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-
 import 'co.dart';
 
 class COData with ChangeNotifier {

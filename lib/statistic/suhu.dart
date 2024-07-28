@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/statistic/suhu_data.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'suhu_data.dart';
 
 class Suhu extends StatefulWidget {
   const Suhu({Key? key}) : super(key: key);

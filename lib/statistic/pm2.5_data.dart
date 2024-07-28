@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-
 import 'pm2.5.dart';
 
 class PM25Data with ChangeNotifier {

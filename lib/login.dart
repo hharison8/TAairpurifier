@@ -94,26 +94,26 @@ class _LoginState extends State<Login> {
                     if (_errorMessage.isNotEmpty)
                       Text(
                         _errorMessage,
-                        style: TextStyle(
-                            color: const Color.fromARGB(255, 255, 0, 0)),
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 255, 0, 0)),
                       ),
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                fontFamily: "Railway",
-                                decoration: TextDecoration.underline,
-                                fontSize: 15,
-                                color: Color(0xff4c505b)),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // const SizedBox(height: 5),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     GestureDetector(
+                    //       onTap: () {},
+                    //       child: const Text(
+                    //         'Forgot Password?',
+                    //         style: TextStyle(
+                    //             fontFamily: "Railway",
+                    //             decoration: TextDecoration.underline,
+                    //             fontSize: 15,
+                    //             color: Color(0xff4c505b)),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(height: 10),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
