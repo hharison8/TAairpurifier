@@ -651,20 +651,14 @@ void loop() {
             if (touch_x > BUTTON1_X && touch_x < BUTTON1_X + BUTTON1_W && touch_y > BUTTON1_Y && touch_y < BUTTON1_Y + BUTTON1_H) {
               Serial.println("Button 1 (ON/OFF) pressed");
               content.set("fields/powerState/booleanValue", false);
-              // if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "powerState")){
-              //   // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
-              // } 
+              if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "powerState")){
+                // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
+              } 
               delay(500);
               tft.fillRoundRect(BUTTON1_X, BUTTON1_Y, BUTTON1_W, BUTTON1_H, 10, TFT_RED); // Off state
               tft.setTextColor(TFT_BLACK);
               tft.setTextSize(2);
               tft.drawCentreString("OFF", BUTTON1_X + BUTTON1_W / 2, BUTTON1_Y + BUTTON1_H / 2 - 15, 2);
-              uint16_t raw_x, raw_y;
-              if (tft.getTouch(&raw_y, &raw_x)) {
-
-              }
-              uint16_t touch_x = map(raw_x, 0, 320, 0, 240);  // Adjust these values as needed
-              uint16_t touch_y = map(raw_y, 0, 240, 0, 320);  // Adjust these values as needed
             } 
 
             tft.fillRoundRect(BUTTON2_X, BUTTON2_Y, BUTTON2_W, BUTTON2_H, 10, TFT_BLUE); // Auto mode
@@ -674,20 +668,14 @@ void loop() {
             if (touch_x > BUTTON2_X && touch_x < BUTTON2_X + BUTTON2_W && touch_y > BUTTON2_Y && touch_y < BUTTON2_Y + BUTTON2_H) {
               Serial.println("Button 2 (Mode) pressed");
               content.set("fields/autoMode/booleanValue", false);
-              // if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "autoMode")){
-              //   // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
-              // }
+              if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "autoMode")){
+                // Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
+              }
               delay(500);
               tft.fillRoundRect(BUTTON2_X, BUTTON2_Y, BUTTON2_W, BUTTON2_H, 10, TFT_ORANGE);
               tft.setTextColor(TFT_BLACK);
               tft.setTextSize(2);
               tft.drawCentreString("Mode", BUTTON2_X + BUTTON2_W / 2, BUTTON2_Y + BUTTON2_H / 2 - 15, 2);
-              uint16_t raw_x, raw_y;
-              if (tft.getTouch(&raw_y, &raw_x)) {
-
-              }
-              uint16_t touch_x = map(raw_x, 0, 320, 0, 240);  // Adjust these values as needed
-              uint16_t touch_y = map(raw_y, 0, 240, 0, 320);  // Adjust these values as needed
             }
 
             tft.fillRoundRect(BUTTON3_X, BUTTON3_Y, BUTTON3_W, BUTTON3_H, 10, TFT_DARKGREY); // Disabled state
